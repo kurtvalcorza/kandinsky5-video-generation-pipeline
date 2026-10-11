@@ -1,6 +1,5 @@
 """Owner decisions D-2, D-3, D-6 (pass B2): Kaggle-only gate, the CUDA 12.8 lock stack, and the unwaived size gate."""
 # ruff: noqa: E501
-
 from __future__ import annotations
 
 import json
@@ -8,6 +7,7 @@ import platform
 import re
 
 import pytest
+
 from conftest import ROOT, load_tool
 
 build = load_tool("build_notebook")
@@ -58,7 +58,7 @@ def test_install_cell_reaches_only_pypi_and_the_cu128_index() -> None:
     assert pattern.search(code.replace("https://download.pytorch.org/whl/cu128", "https://example.org/simple"))
 
 
-def test_check_cell_refuses_a_non_kaggle_linux_session(monkeypatch) -> None:
+def test_check_cell_refuses_a_non_kaggle_linux_session(monkeypatch, no_gpu_probe) -> None:
     """With Linux x86_64 faked and no Kaggle markers, the first cell stops before probing the GPU (D-2)."""
     monkeypatch.setattr(platform, "system", lambda: "Linux")
     monkeypatch.setattr(platform, "machine", lambda: "x86_64")
@@ -67,8 +67,23 @@ def test_check_cell_refuses_a_non_kaggle_linux_session(monkeypatch) -> None:
         exec(compile(_check_cell(), "check_cell", "exec"), {})
 
 
-def test_check_cell_requires_both_markers(monkeypatch) -> None:
-    """The env var alone is not enough on a host without /kaggle (this Windows host has none)."""
+@pytest.fixture
+def no_gpu_probe(monkeypatch):
+    """The gate must refuse before nvidia-smi runs; fail loudly if the cell reaches it (no local GPU use)."""
+    import subprocess
+
+    def refuse(*args, **kwargs):
+        raise AssertionError(f"the check cell reached a subprocess call before refusing: {args[:1]}")
+
+    monkeypatch.setattr(subprocess, "run", refuse)
+
+
+def test_check_cell_requires_both_markers(monkeypatch, no_gpu_probe) -> None:
+    """The env var alone is not enough without the /kaggle mount (the mount is faked absent; this host happens to have C:/kaggle)."""
+    from pathlib import Path
+
+    real_is_dir = Path.is_dir
+    monkeypatch.setattr(Path, "is_dir", lambda self: False if self.as_posix() in ("/kaggle", "C:/kaggle") else real_is_dir(self))
     monkeypatch.setattr(platform, "system", lambda: "Linux")
     monkeypatch.setattr(platform, "machine", lambda: "x86_64")
     monkeypatch.setenv("KAGGLE_KERNEL_RUN_TYPE", "Interactive")
