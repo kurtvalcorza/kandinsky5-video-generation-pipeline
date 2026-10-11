@@ -90,8 +90,8 @@ and watermarks in a conditioning photograph carry into the generated clip.
 ###### Environment
 
 The supported environment is a Kaggle notebook with a Tesla T4 (15,360 MiB, compute capability 7.5) and at least 24 GB of
-available host RAM; the notebook stops elsewhere. Stages run in an isolated environment of CPython 3.12.12 built from a
-hash lock of torch 2.11.0 (the PyPI CUDA 13 build), diffusers 0.40.0, transformers 5.16.1, accelerate 1.14.0 and
+available host RAM, in a Kaggle notebook session (`KAGGLE_KERNEL_RUN_TYPE` and `/kaggle`); the notebook stops elsewhere. Stages run in an isolated environment of CPython 3.12.12 built from a
+hash lock of torch 2.11.0+cu128 and torchvision 0.26.0+cu128 (PyTorch CUDA 12.8 index, the build the probe ran), diffusers 0.40.0, transformers 5.16.1, accelerate 1.14.0 and
 bitsandbytes 0.50.2. Timing and memory figures in this card come from a development probe on a Kaggle T4 (2026-10-11/12,
 Python 3.13, torch 2.11.0+cu128, in-kernel install), not from the notebook: about 150 s to download, 70 s to load the
 encoders, 1352 s (text-to-video) and 1378 s (image-to-video) to generate, a 10.19 GB GPU peak during generation and an
@@ -105,12 +105,12 @@ The repository measures no quality metric. Its notebook reports, per clip: decod
 frame with pixel standard deviation below 0.01; mean change between neighbouring frames at least 0.002; no neighbouring
 pair changing by more than 0.25); for image-to-video, the mean absolute difference, PSNR and CLIP image similarity between
 the first frame and the conditioning photograph; and the mean CLIP ViT-L/14 cosine similarity of the frames to their own
-prompt and to the other capability's prompt, with the margin between them. These are sanity checks and a coarse proxy on one
+prompt and to the other capability's prompt, with the margin between them. These are uncalibrated tutorial evidence: sanity checks and a coarse proxy, compared only with a swapped-prompt baseline, on one
 clip per capability. Upstream benchmark results in the Kandinsky 5.0 report are not reproduced here.
 
 ###### Decision thresholds
 
-The only thresholds are the frame-check limits listed under Performance Measures, chosen to catch the blank and frozen
+The only thresholds are the uncalibrated frame-check limits listed under Performance Measures, chosen to catch the blank and frozen
 outputs seen during development. A clip with non-finite or blank frames is refused; the motion and cut checks are reported
 but do not stop the run. The CLIP margin has no threshold: its sign is reported as an observation. None of these thresholds
 is calibrated against human judgement, and a deployment that needs an accept/reject decision would have to set and validate

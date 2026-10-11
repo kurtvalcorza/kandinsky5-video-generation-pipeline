@@ -27,4 +27,9 @@ development-probe figure until a run is recorded here (REL9).
 An engineering-only `SMOKE` notebook ran on a Kaggle T4 on 2026-10-11 and 2026-10-12 (Python 3.13, in-kernel install of
 torch 2.11.0+cu128, transformers 5.16.1, diffusers 0.40.0, bitsandbytes 0.50.2). It established the recipe the tutorial uses
 and the three rejected approaches listed in the notebook's **What did not work** section. It ran different code from this
-notebook and is not evidence for any notebook blob.
+notebook and is not evidence for any notebook blob. Its two logs are committed byte for byte in `docs/development-probe/`.
+
+## Open items
+
+- Size gate: the 28.4 GB weights set is above the 9 GB publication convenience gate; **not waived**.
+- Lock: torch 2.11.0+cu128 / torchvision 0.26.0+cu128 from the PyTorch CUDA 12.8 index with `-cu12` NVIDIA wheels; matches the probe's torch build but has not been installed or run in the notebook's isolated environment on Kaggle.

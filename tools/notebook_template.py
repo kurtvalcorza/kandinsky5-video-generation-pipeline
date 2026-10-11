@@ -48,9 +48,9 @@ TEMPLATE = {
     "kind": "TUTORIAL",
     "notice": NOTICE,
     "run_all": (
-        "Select **Run all** in a fresh **Kaggle** notebook with the **GPU T4** accelerator and Internet on. The notebook stops "
-        "in Section 1 with an actionable message on any other runtime: it needs a T4-class GPU and at least 24 GB of free host "
-        "memory, which free Colab (about 12.7 GB) does not have. It builds an isolated Python environment from the carried "
+        "**This notebook runs on Kaggle only.** Select **Run all** in a fresh **Kaggle** notebook with the **GPU T4** accelerator "
+        "and Internet on. Section 1 stops with an actionable message on any other runtime: it checks the Kaggle session markers, "
+        "a T4-class GPU and at least 24 GB of free host memory, which free Colab (about 12.7 GB) does not have. It builds an isolated Python environment from the carried "
         "hash-locked requirements without touching the kernel's packages, stages and SHA-256-verifies two pinned Hub snapshots "
         "(~{total_gb} GB), fetches and verifies one CC0 photograph, validates the prompts, the image and the settings, encodes "
         "the three prompts once with a 4-bit text encoder and releases it, generates a 49-frame text-to-video clip and then a "
@@ -93,6 +93,7 @@ TEMPLATE = {
     },
     # Runtime gate (ENV4, ENV12, RUN11). The RAM floor is the largest host-memory peak measured while loading the 4-bit
     # encoder in the development probe (21.94 GB, ru_maxrss of the probe kernel) plus about 2 GB of headroom.
+    "torch_index": "https://download.pytorch.org/whl/cu128",
     "runtime_gate": {"min_gpu_mib": 15000, "min_compute_capability": 7.5, "min_available_ram_gb": 24.0, "measured_peak_ram_gb": 21.9, "environment_gb": 12},
     "runtime_modules": ["torch", "diffusers", "transformers", "bitsandbytes"],
     "title": "Kandinsky 5.0 Video Lite — DIMER guided notebook: text-to-video and image-to-video on a Kaggle T4 (standalone)",
@@ -135,7 +136,7 @@ TEMPLATE = {
         "check measures video quality. Free Colab and CPU-only runtimes are not supported."
     ),
     "prerequisites": [
-        "- **Runtime:** a fresh **Kaggle** notebook with the **GPU T4** accelerator (T4 x2 is fine: the stages use the first GPU only) and Internet on. Section 1 refuses a GPU with less than 15,000 MiB or compute capability below 7.5, and a session with less than 24 GB of available host RAM. The kernel's Python version does not matter: the notebook installs nothing into it and runs every stage with CPython 3.12.12 in an isolated environment built from {n_locked} hash-locked packages (torch 2.11.0 from PyPI, whose Linux wheel is the CUDA 13 build). About {total_gb} GB of disk is needed for the weights (written to the temporary disk, not `/kaggle/working`) and about 12 GB for the environment. The lock targets manylinux x86_64 only; other platforms stop in Section 1.",
+        "- **Runtime:** a fresh **Kaggle** notebook with the **GPU T4** accelerator (T4 x2 is fine: the stages use the first GPU only) and Internet on. Section 1 refuses any session that is not a Kaggle notebook (it requires the `KAGGLE_KERNEL_RUN_TYPE` variable and the `/kaggle` mount), and refuses a GPU with less than 15,000 MiB or compute capability below 7.5, and a session with less than 24 GB of available host RAM. The kernel's Python version does not matter: the notebook installs nothing into it and runs every stage with CPython 3.12.12 in an isolated environment built from {n_locked} hash-locked packages (torch 2.11.0+cu128 and torchvision 0.26.0+cu128 from the PyTorch CUDA 12.8 index, the build the development probe ran on Kaggle; everything else from PyPI). About {total_gb} GB of disk is needed for the weights (written to the temporary disk, not `/kaggle/working`) and about 12 GB for the environment. The lock targets manylinux x86_64 only; other platforms stop in Section 1.",
         "- **Precision and placement:** Qwen2.5-VL-7B is quantized to 4-bit NF4 by `bitsandbytes` with float16 compute and placed on the GPU; the CLIP text encoder runs in float16; both are released before generation. Each transformer and the VAE run in float16 on the GPU with VAE tiling on. Kernels are not forced to be deterministic, so the same seed can give slightly different pixels on another GPU or library build.",
         "- **Knowledge:** you can run notebook cells and read short Python. Helpful but not required: what a diffusion model does at inference, what classifier-free guidance is, and why a training-free check is not a quality score. Terms are explained where they are first used and collected in the Glossary.",
         "- **Weights:** every staged weight file is safetensors; `pytorch_model.bin`, `flax_model.msgpack` and `tf_model.h5` duplicates in the upstream repository are not downloaded, nothing is unpickled, and no Hub-hosted code is executed — the model classes come from `diffusers` [7] and `transformers` on PyPI. Licences: the Kandinsky 5.0 transformers are MIT; the HunyuanVideo VAE is under the Tencent Hunyuan Community License [10] (territory excludes the EU, the UK and South Korea; a separate licence is required above 100 million monthly active users; an Acceptable Use Policy applies); Qwen2.5-VL-7B is Apache-2.0; the OpenAI CLIP weights are MIT. The model card has the details.",
@@ -263,7 +264,8 @@ TEMPLATE = {
             "md": (
                 "## 1. Check the runtime · [Engineering]\n\n"
                 "> **Infrastructure.** The next code cell is collapsed. You may run it without studying its implementation.\n\n"
-                "The cell stops with an actionable message unless it finds Linux x86_64 (the lock is built for manylinux x86_64), an "
+                "The cell stops with an actionable message unless it finds Linux x86_64 (the lock is built for manylinux x86_64), a "
+                "Kaggle notebook session (`KAGGLE_KERNEL_RUN_TYPE` set to `Interactive` or `Batch`, and the `/kaggle` mount), an "
                 "NVIDIA GPU with at least 15,000 MiB and compute capability 7.5 (a T4 reports 15,360 MiB and 7.5), at least 24 GB of "
                 "*available* host RAM, and enough disk. The RAM floor comes from development runs on a Kaggle T4: loading the "
                 "4-bit text encoder peaked at 18.6–21.9 GB of host memory, because the encoder's float16 shards pass through host "
@@ -433,7 +435,9 @@ TEMPLATE = {
                 "and the margin between them. The baseline is meaningful because the two prompts describe different scenes.\n\n"
                 "**Why not a standard video metric?** Fréchet Video Distance needs hundreds of reference clips, and VBench-style "
                 "suites need many more generations than two clips that each take over 20 minutes on a T4. The notebook therefore "
-                "reports sanity checks and a proxy, labelled as such.\n\n"
+                "reports sanity checks and a proxy. **Every threshold and score in this section is uncalibrated tutorial evidence:** "
+                "the frame-check thresholds were chosen to catch the blank and frozen outputs seen in development, not fitted to human "
+                "judgements; CLIP similarities and margins are not probabilities; and the only baseline is the swapped prompt.\n\n"
                 "**Predict before running:** will each clip be closer to its own prompt than to the other one? Which margin do you "
                 "expect to be larger, and why?"
             ),
@@ -445,7 +449,7 @@ TEMPLATE = {
                 "    print(capability, {{'frame_checks_passed': evaluation['frame_checks'][capability]['passed'], 'own_prompt': alignment['own_prompt_similarity'], 'swapped_prompt': alignment['swapped_prompt_similarity'], 'margin': alignment['margin'], 'frames_closer_to_own_prompt': alignment['frames_closer_to_own_prompt']}})"
             ),
             "after": (
-                "**What to notice:** both `frame_checks_passed` values; for each clip, the own-prompt and swapped-prompt similarities "
+                "**What to notice** (all uncalibrated tutorial evidence)**:** both `frame_checks_passed` values; for each clip, the own-prompt and swapped-prompt similarities "
                 "(CLIP cosine similarities for natural images and short captions typically sit between about 0.15 and 0.35) and a "
                 "margin whose sign is the result; `frames_closer_to_own_prompt` near 1.0 when the margin is consistent across the "
                 "clip; and the image-to-video first-frame PSNR. **Cross-capability interpretation:** the two capabilities share every "
@@ -588,7 +592,7 @@ TEMPLATE = {
             "3. **Free Colab cannot hold the 4-bit encoder load.** Observed: host memory peaked at 18.6–21.9 GB while the "
             "Qwen2.5-VL encoder was loaded and quantized; free Colab sessions have about 12.7 GB. Rejected; the notebook targets "
             "Kaggle (about 33.7 GB of host RAM) and refuses sessions with less than 24 GB available.\n\n"
-            "Evidence: the probe logs for Kaggle kernel versions 1 and 2, kept with this repository's build record."
+            "Evidence: the development-probe logs committed byte for byte in this repository under `docs/development-probe/` (Kaggle kernel `kurtvalcorza/kandinsky5-lite-t4-smoke`: version 1 for the blank frames in entry 1, for entry 2 and for the 21.94 GB host-memory peak; version 2 for the per-step check in entry 1 and the 18.55 GB peak)."
         ),
         (
             "## Troubleshooting\n\n"

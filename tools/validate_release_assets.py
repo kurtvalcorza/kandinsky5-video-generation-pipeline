@@ -82,7 +82,8 @@ FORBIDDEN_IN_CODE = (
     ("unsafe deserialization (MOD9)", re.compile(r"\bpickle\.load|\btorch\.load\s*\((?![^)]*weights_only\s*=\s*True)|weights_only\s*=\s*False")),
     ("archive extractall", re.compile(r"\.extractall\s*\(")),
     ("notebook magic or shell escape (SRC6)", re.compile(r"(?m)^\s*[%!]|get_ipython\(\)")),
-    ("unhashed or source install (ENV11)", re.compile(r"--no-binary|--no-build-isolation|--trusted-host|--extra-index-url")),
+    ("unhashed or source install (ENV11)", re.compile(r"--no-binary|--no-build-isolation|--trusted-host")),
+    ("extra index other than the PyTorch cu128 index (ENV11)", re.compile(r"--extra-index-url(?!', 'https://download\.pytorch\.org/whl/cu128')")),
     ("broad warning suppression (SRC11)", re.compile(r"filterwarnings\(\s*['\"]ignore['\"]\s*\)")),
     ("developer-local path (SRC7)", re.compile(r"[A-Za-z]:\\\\Users|/home/[a-z]|/Users/[A-Za-z]")),
     ("credential in source (OUT10)", re.compile(r"hf_[A-Za-z0-9]{30,}|HF_TOKEN\s*=")),
@@ -209,7 +210,7 @@ def notebook_problems(path: Path) -> list[str]:
     for tag in SECTION_TAGS:
         if tag not in markdown:
             problems.append(f"section tag {tag} is never used (GDL12)")
-    for phrase in ("Predict → Change one thing → Run → Observe → Explain", "**Conclusion template.**", "**Transfer.**", "development-run evidence", "Do not upload confidential or restricted", "Kaggle", "**Duration (estimate):**"):
+    for phrase in ("**This notebook runs on Kaggle only.**", "KAGGLE_KERNEL_RUN_TYPE", "uncalibrated tutorial evidence", "docs/development-probe/", "Predict → Change one thing → Run → Observe → Explain", "**Conclusion template.**", "**Transfer.**", "development-run evidence", "Do not upload confidential or restricted", "Kaggle", "**Duration (estimate):**"):
         if phrase not in markdown:
             problems.append(f"missing required phrase: {phrase!r}")
     if PLACEHOLDER.search(markdown + code):
@@ -220,6 +221,16 @@ def notebook_problems(path: Path) -> list[str]:
     problems += notice_problems(cells)
     problems += citation_problems(markdown_cells)
     return problems
+
+
+def lock_problems(lock: Path = ROOT / "tutorials" / "requirements-kaggle.lock.txt") -> list[str]:
+    """ENV11 + owner decision D-3: the carried lock is the CUDA 12.8 stack (+cu128 torch, -cu12 NVIDIA wheels only)."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("audit_lock_coverage", ROOT / "tools" / "audit_lock_coverage.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return [f"{lock.name}: {problem}" for problem in module.cuda_stack_problems(lock.read_text(encoding="utf-8"))]
 
 
 def card_problems() -> list[str]:
@@ -256,13 +267,16 @@ def card_problems() -> list[str]:
     if "**Candidate**" not in status:
         problems.append("STATUS.md must state the status **Candidate** until execution evidence for this blob is recorded (REL14)")
     verification = (ROOT / "docs" / "release-verification.md").read_text(encoding="utf-8")
+    for doc in ("STATUS.md", "docs/WEIGHTS.md"):
+        if "not waived" not in (ROOT / doc).read_text(encoding="utf-8"):
+            problems.append(f"{doc} must record the 9 GB size gate as open and not waived (owner decision D-6)")
     if "Candidate — no recorded execution" not in verification:
         problems.append("docs/release-verification.md must state 'Candidate — no recorded execution' (REL1, REL14)")
     return problems
 
 
 def validate_all(notebook: Path = NOTEBOOK) -> list[str]:
-    return notebook_problems(notebook) + card_problems()
+    return notebook_problems(notebook) + lock_problems() + card_problems()
 
 
 def main(argv: list[str] | None = None) -> int:

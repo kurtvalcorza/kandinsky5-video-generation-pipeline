@@ -66,7 +66,7 @@ def test_carried_lock_is_the_committed_lock_and_pins_pyproject(notebook: dict) -
     assert files[TEMPLATE["lock"]] == lock_text.replace("\r\n", "\n")
     build.check_lock(build._pins(ROOT), lock_text)
     locked = build.lock_packages(lock_text)
-    assert locked["torch"] == "2.11.0" and locked["bitsandbytes"] == "0.50.2" and locked["diffusers"] == "0.40.0" and locked["transformers"] == "5.16.1"
+    assert locked["torch"] == "2.11.0+cu128" and locked["torchvision"] == "0.26.0+cu128" and locked["bitsandbytes"] == "0.50.2" and locked["diffusers"] == "0.40.0" and locked["transformers"] == "5.16.1"
     assert "--python-platform x86_64-manylinux_2_28" in lock_text.splitlines()[1] and "--only-binary :all:" in lock_text.splitlines()[1]
 
 

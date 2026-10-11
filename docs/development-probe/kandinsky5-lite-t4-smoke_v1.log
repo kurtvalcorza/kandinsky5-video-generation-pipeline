@@ -1,0 +1,115 @@
+[{"stream_name":"stderr","time":7.5051589419999996,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.5052179,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.5052246369999995,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.505228777,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.12557429,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.125601942,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.125607071,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.12561132,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":9.315614273,"data":"name, memory.total [MiB], driver_version\n"}
+,{"stream_name":"stdout","time":9.315639293,"data":"Tesla T4, 15360 MiB, 580.178.04\n"}
+,{"stream_name":"stdout","time":9.31564354,"data":"Tesla T4, 15360 MiB, 580.178.04\n"}
+,{"stream_name":"stdout","time":9.315646906,"data":"\n"}
+,{"stream_name":"stdout","time":9.315650169,"data":"python 3.13.15\n"}
+,{"stream_name":"stdout","time":9.315653541,"data":"host RAM total 33.7 GB, available 32.3 GB\n"}
+,{"stream_name":"stdout","time":9.315656925,"data":"disk free 1148.8 GB\n"}
+,{"stream_name":"stdout","time":9.315660154,"data":"runtime: kaggle\n"}
+,{"stream_name":"stdout","time":12.443117956,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.1/43.1 MB 49.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":12.645429019,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.1/43.1 MB 49.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":46.927282604,"data":"torch 2.11.0+cu128 cuda 12.8 | transformers 5.16.1 | diffusers 0.40.0 | accelerate 1.14.0 | bitsandbytes 0.50.2\n"}
+,{"stream_name":"stderr","time":47.810545878,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":47.810585809,"data":"\n"}
+,{"stream_name":"stderr","time":47.810590527,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":200.96799683,"data":"[download] {\"seconds\": 143.6, \"vram_peak_gb\": 0.0, \"vram_reserved_gb\": 0.0, \"host_rss_gb\": 5.17, \"host_avail_gb\": 27.37, \"host_rss_peak_gb\": 10.87, \"disk_free_gb\": 1116.7}\n"}
+,{"stream_name":"stderr","time":281.387089243,"data":"[transformers] \u001b[1mCLIPTextModel LOAD REPORT\u001b[0m from: /root/.cache/huggingface/hub/models--kandinskylab--Kandinsky-5.0-T2V-Lite-distilled16steps-5s-Diffusers/snapshots/06d0f76a70be2f8d88b7db89c19c358d2f3abab6\n"}
+,{"stream_name":"stderr","time":281.387146678,"data":"Key                                                            | Status     |  | \n"}
+,{"stream_name":"stderr","time":281.387154136,"data":"---------------------------------------------------------------+------------+--+-\n"}
+,{"stream_name":"stderr","time":281.38716035,"data":"vision_model.encoder.layers.{0...23}.self_attn.k_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387166528,"data":"vision_model.encoder.layers.{0...23}.layer_norm2.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387184608,"data":"vision_model.encoder.layers.{0...23}.self_attn.k_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387188374,"data":"vision_model.encoder.layers.{0...23}.mlp.fc2.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387191782,"data":"vision_model.encoder.layers.{0...23}.self_attn.q_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387195304,"data":"vision_model.encoder.layers.{0...23}.layer_norm1.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38719956,"data":"vision_model.encoder.layers.{0...23}.self_attn.v_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387203138,"data":"vision_model.encoder.layers.{0...23}.mlp.fc1.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387207642,"data":"vision_model.encoder.layers.{0...23}.mlp.fc1.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387211827,"data":"vision_model.encoder.layers.{0...23}.self_attn.out_proj.weight | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38721675,"data":"vision_model.encoder.layers.{0...23}.self_attn.out_proj.bias   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387220897,"data":"vision_model.encoder.layers.{0...23}.self_attn.v_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387224886,"data":"vision_model.encoder.layers.{0...23}.layer_norm1.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387229356,"data":"vision_model.encoder.layers.{0...23}.mlp.fc2.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387233621,"data":"vision_model.encoder.layers.{0...23}.layer_norm2.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387237896,"data":"vision_model.encoder.layers.{0...23}.self_attn.q_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387241984,"data":"vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387246202,"data":"vision_model.pre_layrnorm.bias                                 | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38725102,"data":"vision_model.pre_layrnorm.weight                               | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38725512,"data":"logit_scale                                                    | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387262191,"data":"vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387266685,"data":"text_projection.weight                                         | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387271104,"data":"vision_model.embeddings.class_embedding                        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387275575,"data":"visual_projection.weight                                       | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387279821,"data":"vision_model.post_layernorm.weight                             | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38728452,"data":"vision_model.post_layernorm.bias                               | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387288882,"data":"\n"}
+,{"stream_name":"stderr","time":281.387292994,"data":"Notes:\n"}
+,{"stream_name":"stderr","time":281.387297178,"data":"- UNEXPECTED:\tcan be ignored when loading from different task/architecture; not ok if you expect identical arch.\n"}
+,{"stream_name":"stderr","time":281.387301859,"data":"\n"}
+,{"stream_name":"stderr","time":281.387311599,"data":"[transformers] \u001b[1mCLIPTextModel LOAD REPORT\u001b[0m from: /root/.cache/huggingface/hub/models--kandinskylab--Kandinsky-5.0-T2V-Lite-distilled16steps-5s-Diffusers/snapshots/06d0f76a70be2f8d88b7db89c19c358d2f3abab6\n"}
+,{"stream_name":"stderr","time":281.387316602,"data":"Key                                                            | Status     |  | \n"}
+,{"stream_name":"stderr","time":281.387321152,"data":"---------------------------------------------------------------+------------+--+-\n"}
+,{"stream_name":"stderr","time":281.38732575,"data":"vision_model.encoder.layers.{0...23}.self_attn.k_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387329699,"data":"vision_model.encoder.layers.{0...23}.layer_norm2.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38733386,"data":"vision_model.encoder.layers.{0...23}.self_attn.k_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.38733796,"data":"vision_model.encoder.layers.{0...23}.mlp.fc2.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.3873424,"data":"vision_model.encoder.layers.{0...23}.self_attn.q_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387347007,"data":"vision_model.encoder.layers.{0...23}.layer_norm1.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387351645,"data":"vision_model.encoder.layers.{0...23}.self_attn.v_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387356019,"data":"vision_model.encoder.layers.{0...23}.mlp.fc1.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387360064,"data":"vision_model.encoder.layers.{0...23}.mlp.fc1.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387364194,"data":"vision_model.encoder.layers.{0...23}.self_attn.out_proj.weight | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387368614,"data":"vision_model.encoder.layers.{0...23}.self_attn.out_proj.bias   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387372898,"data":"vision_model.encoder.layers.{0...23}.self_attn.v_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387377312,"data":"vision_model.encoder.layers.{0...23}.layer_norm1.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387382218,"data":"vision_model.encoder.layers.{0...23}.mlp.fc2.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387386646,"data":"vision_model.encoder.layers.{0...23}.layer_norm2.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387390892,"data":"vision_model.encoder.layers.{0...23}.self_attn.q_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387395269,"data":"vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387399494,"data":"vision_model.pre_layrnorm.bias                                 | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387403776,"data":"vision_model.pre_layrnorm.weight                               | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387408191,"data":"logit_scale                                                    | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387412696,"data":"vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387417272,"data":"text_projection.weight                                         | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387421676,"data":"vision_model.embeddings.class_embedding                        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387430691,"data":"visual_projection.weight                                       | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387435194,"data":"vision_model.post_layernorm.weight                             | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387439303,"data":"vision_model.post_layernorm.bias                               | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":281.387443555,"data":"\n"}
+,{"stream_name":"stderr","time":281.387447506,"data":"Notes:\n"}
+,{"stream_name":"stderr","time":281.387451636,"data":"- UNEXPECTED:\tcan be ignored when loading from different task/architecture; not ok if you expect identical arch.\n"}
+,{"stream_name":"stdout","time":281.814307104,"data":"[load_encoders] {\"seconds\": 70.4, \"vram_peak_gb\": 6.52, \"vram_reserved_gb\": 6.54, \"host_rss_gb\": 5.66, \"host_avail_gb\": 27.05, \"host_rss_peak_gb\": 21.94}\n"}
+,{"stream_name":"stdout","time":283.297824998,"data":"t2v (1, 23, 3584) (1, 768) finite: True\n"}
+,{"stream_name":"stdout","time":283.54881184,"data":"i2v (1, 17, 3584) (1, 768) finite: True\n"}
+,{"stream_name":"stdout","time":283.960666847,"data":"neg (1, 32, 3584) (1, 768) finite: True\n"}
+,{"stream_name":"stdout","time":283.96070723,"data":"[encode_prompts] {\"seconds\": 2.0, \"vram_peak_gb\": 6.72, \"vram_reserved_gb\": 6.88, \"host_rss_gb\": 6.1, \"host_avail_gb\": 26.66, \"host_rss_peak_gb\": 21.94, \"finite\": true}\n"}
+,{"stream_name":"stdout","time":284.096548006,"data":"after free: {'vram_peak_gb': 6.53, 'vram_reserved_gb': 0.03, 'host_rss_gb': 6.1, 'host_avail_gb': 26.66, 'host_rss_peak_gb': 21.94}\n"}
+,{"stream_name":"stderr","time":306.772058076,"data":"/usr/local/lib/python3.13/dist-packages/torch/nn/functional.py:2954: UserWarning: Mismatch dtype between input and weight: input dtype = float, weight dtype = c10::Half, Cannot dispatch to fused implementation. (Triggered internally at /pytorch/aten/src/ATen/native/layer_norm.cpp:344.)\n"}
+,{"stream_name":"stderr","time":306.772103472,"data":"  return torch.rms_norm(input, normalized_shape, weight, eps)\n"}
+,{"stream_name":"stderr","time":306.772110807,"data":"\n"}
+,{"stream_name":"stderr","time":306.772116364,"data":"/usr/local/lib/python3.13/dist-packages/torch/nn/functional.py:2954: UserWarning: Mismatch dtype between input and weight: input dtype = float, weight dtype = c10::Half, Cannot dispatch to fused implementation. (Triggered internally at /pytorch/aten/src/ATen/native/layer_norm.cpp:344.)\n"}
+,{"stream_name":"stderr","time":306.772122804,"data":"  return torch.rms_norm(input, normalized_shape, weight, eps)\n"}
+,{"stream_name":"stdout","time":559.205837651,"data":"[t2v_float16] {\"seconds\": 274.9, \"vram_peak_gb\": 10.19, \"vram_reserved_gb\": 0.03, \"host_rss_gb\": 10.29, \"host_avail_gb\": 22.48, \"host_rss_peak_gb\": 21.94, \"generate_seconds\": 251.4, \"ok\": false, \"error\": null, \"shape\": [49, 512, 768, 3], \"pixel_std\": 0.0}\n"}
+,{"stream_name":"stdout","time":561.435186362,"data":"[t2v_bfloat16] {\"seconds\": 2.4, \"vram_peak_gb\": 6.2, \"vram_reserved_gb\": 5.91, \"host_rss_gb\": 10.07, \"host_avail_gb\": 22.66, \"host_rss_peak_gb\": 21.94, \"generate_seconds\": null, \"ok\": false, \"error\": \"OutOfMemoryError: CUDA out of memory. Tried to allocate 41.59 GiB. GPU 0 has a total capacity of 14.56 GiB of which 8.25 GiB is free. Including non-PyTorch memory, this process has 6.31 GiB memory in use. Of the allocated memory 5.78 GiB is allocated by PyTorch, and 410.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=ex\", \"shape\": null, \"pixel_std\": null}\n"}
+,{"stream_name":"stdout","time":1960.428626096,"data":"[i2v_float16] {\"seconds\": 1398.2, \"vram_peak_gb\": 10.19, \"vram_reserved_gb\": 0.03, \"host_rss_gb\": 10.27, \"host_avail_gb\": 22.53, \"host_rss_peak_gb\": 21.94, \"generate_seconds\": 1378.2, \"ok\": true, \"error\": null, \"shape\": [49, 512, 768, 3], \"pixel_std\": 0.2496}\n"}
+,{"stream_name":"stdout","time":1962.251897031,"data":"SMOKE_RESULT_JSON {\"t2v\": {\"repo\": \"kandinskylab/Kandinsky-5.0-T2V-Lite-distilled16steps-5s-Diffusers\", \"rev\": \"06d0f76a70be2f8d88b7db89c19c358d2f3abab6\"}, \"i2v\": {\"repo\": \"kandinskylab/Kandinsky-5.0-I2V-Lite-5s-Diffusers\", \"rev\": \"8d965626ab76734922b00e359ca2d8faab2e0417\", \"dtype_used\": \"torch.float16\"}, \"stages\": {\"download\": {\"seconds\": 143.6, \"vram_peak_gb\": 0.0, \"vram_reserved_gb\": 0.0, \"host_rss_gb\": 5.17, \"host_avail_gb\": 27.37, \"host_rss_peak_gb\": 10.87, \"disk_free_gb\": 1116.7}, \"load_encoders\": {\"seconds\": 70.4, \"vram_peak_gb\": 6.52, \"vram_reserved_gb\": 6.54, \"host_rss_gb\": 5.66, \"host_avail_gb\": 27.05, \"host_rss_peak_gb\": 21.94}, \"encode_prompts\": {\"seconds\": 2.0, \"vram_peak_gb\": 6.72, \"vram_reserved_gb\": 6.88, \"host_rss_gb\": 6.1, \"host_avail_gb\": 26.66, \"host_rss_peak_gb\": 21.94, \"finite\": true}, \"t2v_float16\": {\"seconds\": 274.9, \"vram_peak_gb\": 10.19, \"vram_reserved_gb\": 0.03, \"host_rss_gb\": 10.29, \"host_avail_gb\": 22.48, \"host_rss_peak_gb\": 21.94, \"generate_seconds\": 251.4, \"ok\": false, \"error\": null, \"shape\": [49, 512, 768, 3], \"pixel_std\": 0.0}, \"t2v_bfloat16\": {\"seconds\": 2.4, \"vram_peak_gb\": 6.2, \"vram_reserved_gb\": 5.91, \"host_rss_gb\": 10.07, \"host_avail_gb\": 22.66, \"host_rss_peak_gb\": 21.94, \"generate_seconds\": null, \"ok\": false, \"error\": \"OutOfMemoryError: CUDA out of memory. Tried to allocate 41.59 GiB. GPU 0 has a total capacity of 14.56 GiB of which 8.25 GiB is free. Including non-PyTorch memory, this process has 6.31 GiB memory in use. Of the allocated memory 5.78 GiB is allocated by PyTorch, and 410.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=ex\", \"shape\": null, \"pixel_std\": null}, \"i2v_float16\": {\"seconds\": 1398.2, \"vram_peak_gb\": 10.19, \"vram_reserved_gb\": 0.03, \"host_rss_gb\": 10.27, \"host_avail_gb\": 22.53, \"host_rss_peak_gb\": 21.94, \"generate_seconds\": 1378.2, \"ok\": true, \"error\": null, \"shape\": [49, 512, 768, 3], \"pixel_std\": 0.2496}}, \"pass\": false, \"i2v.mp4\": {\"bytes\": 235151, \"sha256\": \"491618e13182462ac3b2f0eff4aa9ebe775b47b44431b051897746609ada7fc0\"}}\n"}
+,{"stream_name":"stderr","time":1969.454840518,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1969.454871356,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1969.721155587,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1969.721180736,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1970.660372293,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":1970.778454462,"data":"[NbConvertApp] Writing 654258 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":1973.268372532,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1974.050709519,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":1974.050740102,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":1974.051102505,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":1974.051530861,"data":"[NbConvertApp] Writing 445911 bytes to __results__.html\n"}
+]

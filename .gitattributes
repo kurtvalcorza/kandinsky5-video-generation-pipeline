@@ -4,3 +4,5 @@
 weights/** -text
 # Executed notebooks and run logs are evidence; keep them byte-for-byte.
 docs/execution-evidence/** -text
+# Development-probe logs are evidence; keep them byte-for-byte.
+docs/development-probe/** -text

@@ -22,4 +22,4 @@ its scheduler config and `model_index.json` are staged from it; the manifest rec
 `sharedComponentsFrom`.
 
 **Size.** The weights set is about 28.4 GB, above the fleet's 9 GB publication convenience gate. Provenance is recorded here
-and in `MODEL_CARD.md`; whether the gate is waived is not decided in this repository.
+and in `MODEL_CARD.md`. The gate is **open and not waived**: the owner did not approve a waiver (2026-10-12).

@@ -98,6 +98,30 @@ def lock_packages(lock_text: str) -> dict[str, str]:
     return {m.group(1).lower(): m.group(2) for m in re.finditer(r"^([A-Za-z0-9._-]+)==([^\s\\]+)", lock_text, re.M)}
 
 
+TORCH_INDEX = "https://download.pytorch.org/whl/cu128"
+CUDA_LOCAL_VERSION = "+cu128"
+
+
+def cuda_stack_problems(lock_text: str) -> list[str]:
+    """The lock must hold the CUDA 12.8 stack the Kaggle probe ran: +cu128 torch/torchvision and only -cu12 NVIDIA wheels.
+
+    A CUDA 13 build (PyPI's default torch 2.11.0 Linux wheel, with nvidia-*-cu13 or unsuffixed nvidia-* 13.x wheels) failed
+    on Kaggle's CUDA 12.8 host in the fleet's records (libnvJitLink.so.13 not found).
+    """
+    locked = lock_packages(lock_text)
+    problems = []
+    for name in ("torch", "torchvision"):
+        version = locked.get(name)
+        if version is None or not version.endswith(CUDA_LOCAL_VERSION):
+            problems.append(f"{name}=={version} is not a {CUDA_LOCAL_VERSION} build from {TORCH_INDEX}")
+    for name, version in locked.items():
+        if name.startswith("nvidia-") and not name.endswith("-cu12"):
+            problems.append(f"{name}=={version} is not a CUDA 12 (-cu12) NVIDIA wheel")
+        if "cu13" in name or (name in ("cuda-toolkit", "nvidia-cuda-runtime-cu12") and not version.startswith("12.8")):
+            problems.append(f"{name}=={version} is not part of the CUDA 12.8 stack")
+    return problems
+
+
 def imported_modules(paths: list[Path]) -> dict[str, list[str]]:
     """`{top-level module: [file:line, ...]}` for every import statement, at any nesting depth."""
     found: dict[str, list[str]] = {}
@@ -116,8 +140,10 @@ def imported_modules(paths: list[Path]) -> dict[str, list[str]]:
 
 def audit(lock_path: Path, library_root: Path | None = None) -> list[str]:
     """Return a list of problems (empty when the lock covers everything)."""
-    locked = lock_packages(lock_path.read_text(encoding="utf-8"))
-    problems: list[str] = []
+    lock_text = lock_path.read_text(encoding="utf-8")
+    locked = lock_packages(lock_text)
+    problems: list[str] = cuda_stack_problems(lock_text)
+    print(f"CUDA stack: torch {locked.get('torch')}, torchvision {locked.get('torchvision')}, {sum(n.startswith('nvidia-') for n in locked)} nvidia-* wheels")
     stdlib = set(sys.stdlib_module_names) | {"__future__"}
     imports = imported_modules(RUNTIME_CODE)
     print(f"import map ({len(RUNTIME_CODE)} files):")

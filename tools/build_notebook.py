@@ -31,14 +31,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-GENERATOR_VERSION = "build_notebook.py/3.1-k5video"
+GENERATOR_VERSION = "build_notebook.py/3.2-k5video"
 NOTEBOOK_SPEC = "2.4"
 SOURCE_RECORD = "source.json"
 IDENTITY_NAMES = ("MODEL_ID", "MODEL_REVISION", "MODEL_LICENSE", "MODEL_KEY", "I2V_ID", "I2V_REVISION", "I2V_KEY")
 REQUIRED_KEYS = (
     "package", "repo_name", "stem", "notebook_name", "profile", "mode", "kind", "run_all", "byod", "title", "badges",
     "capability", "notice", "intro", "learning_objectives", "exclusions", "prerequisites", "carried", "stage_runner", "lock",
-    "managed_python", "uv", "runtime_gate", "runtime_modules", "setup", "cells", "closing", "guided",
+    "managed_python", "uv", "torch_index", "runtime_gate", "runtime_modules", "setup", "cells", "closing", "guided",
 )
 PROFILES = ("E2E", "ARTIFACT-INFERENCE", "TASK-INFERENCE", "MULTI-CAPABILITY")
 MODES = ("REFERENCE", "GUIDED", "WORKSHOP")
@@ -199,6 +199,11 @@ SESSION_START = time.perf_counter()
 RUNTIME_NOTE = 'This notebook is supported on a Kaggle notebook with a T4 GPU (Settings > Accelerator > GPU T4 x2, Internet on). See Prerequisites and Troubleshooting.'
 if platform.system() != 'Linux' or platform.machine() != 'x86_64':
     raise RuntimeError('Unsupported platform: the locked environment is built for Linux x86_64 (manylinux). ' + RUNTIME_NOTE)
+# Kaggle-only (owner decision): a Kaggle notebook sets KAGGLE_KERNEL_RUN_TYPE to 'Interactive' or 'Batch' and mounts /kaggle.
+# Both markers are required, so a large non-Kaggle session (for example Colab Pro High-RAM) cannot pass the resource gate untested.
+KAGGLE_MARKERS = {{'KAGGLE_KERNEL_RUN_TYPE': os.environ.get('KAGGLE_KERNEL_RUN_TYPE', ''), '/kaggle': Path('/kaggle').is_dir()}}
+if KAGGLE_MARKERS['KAGGLE_KERNEL_RUN_TYPE'] not in ('Interactive', 'Batch') or not KAGGLE_MARKERS['/kaggle']:
+    raise RuntimeError(f'This is not a Kaggle notebook session (markers found: {{KAGGLE_MARKERS}}). The notebook is tested and supported on Kaggle only; open it in Kaggle (File > Import Notebook), then Run all. ' + RUNTIME_NOTE)
 try:
     gpu = subprocess.run(['nvidia-smi', '--query-gpu=name,memory.total,compute_cap', '--format=csv,noheader,nounits'], capture_output=True, text=True)
 except FileNotFoundError as exc:
@@ -274,7 +279,9 @@ for name in ('HF_TOKEN', 'HUGGING_FACE_HUB_TOKEN', 'PYTHONPATH', 'PYTHONHOME'):
     ENV.pop(name, None)
 subprocess.run([str(UV), 'venv', '--managed-python', '--python', {python!r}, str(ENV_ROOT / 'venv')], env=ENV, check=True)
 PYTHON = ENV_ROOT / 'venv' / 'bin' / 'python'
-subprocess.run([str(UV), 'pip', 'install', '--python', str(PYTHON), '--require-hashes', '--only-binary', ':all:', '--index-url', 'https://pypi.org/simple', '-r', str(ROOT / {lock!r})], env=ENV, check=True)
+# torch and torchvision are pinned as +cu128 builds that exist only on the PyTorch CUDA 12.8 index; every pin is exact and
+# hash-locked (--require-hashes), so considering both indexes cannot substitute a different build.
+subprocess.run([str(UV), 'pip', 'install', '--python', str(PYTHON), '--require-hashes', '--only-binary', ':all:', '--index-url', 'https://pypi.org/simple', '--extra-index-url', {torch_index!r}, '--index-strategy', 'unsafe-best-match', '-r', str(ROOT / {lock!r})], env=ENV, check=True)
 probe = subprocess.run([str(PYTHON), '-c', {probe!r}], env=ENV, check=True, capture_output=True, text=True)
 RUNTIME = json.loads(probe.stdout.strip().splitlines()[-1])
 print({{'notebook_source': NOTEBOOK_SOURCE['revision'], **RUNTIME, 'locked_packages': {n_locked}, 'environment': str(ENV_ROOT / 'venv'), 'setup_seconds': round(time.perf_counter() - SESSION_START)}})
@@ -347,7 +354,7 @@ def _infrastructure_code(key: str, ctx: dict[str, Any], template: dict[str, Any]
         uv = template["uv"]
         return INSTALL_CELL.format(
             uv_url=uv["url"], uv_bytes=int(uv["bytes"]), uv_sha256=uv["sha256"], uv_version=uv["version"],
-            python=template["managed_python"], lock=template["lock"], probe=_probe(template["runtime_modules"]),
+            python=template["managed_python"], lock=template["lock"], torch_index=template["torch_index"], probe=_probe(template["runtime_modules"]),
             n_locked=ctx["lock_packages"], runner=template["stage_runner"],
         )
     if key == "weights":

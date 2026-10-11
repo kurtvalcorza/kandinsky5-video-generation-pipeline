@@ -23,7 +23,7 @@ on a single Kaggle T4.
 
 ## Runtime
 
-Kaggle notebook, GPU T4, Internet on, at least 24 GB of available host RAM. Free Colab is not supported: loading the 4-bit
+Kaggle only: a Kaggle notebook (the first cell checks `KAGGLE_KERNEL_RUN_TYPE` and `/kaggle`), GPU T4, Internet on, at least 24 GB of available host RAM. The 28.4 GB weights set is above the 9 GB publication convenience gate, which is open and not waived. Free Colab is not supported: loading the 4-bit
 Qwen2.5-VL encoder peaked at 18.6–21.9 GB of host memory in development runs. The VAE licence does not apply in the EU, the UK
 or South Korea.
 
@@ -41,7 +41,7 @@ uv pip install --python .venv pytest==8.4.2 ruff==0.16.6 numpy==2.5.3 pillow==11
 
 Regenerate the lock with
 `uv pip compile pyproject.toml --python-version 3.12 --python-platform x86_64-manylinux_2_28 --generate-hashes --index-url https://pypi.org/simple --only-binary :all: -o tutorials/requirements-kaggle.lock.txt`
-and then the notebook with `python tools/build_notebook.py`. These checks are static and are not execution evidence.
+(`pyproject.toml` routes `torch` and `torchvision` to the explicit `pytorch-cu128` index, https://download.pytorch.org/whl/cu128, so they resolve as `+cu128` builds with CUDA 12.8 `-cu12` NVIDIA wheels from PyPI), and then the notebook with `python tools/build_notebook.py`. The notebook installs the lock with `--require-hashes --only-binary :all: --index-url https://pypi.org/simple --extra-index-url https://download.pytorch.org/whl/cu128 --index-strategy unsafe-best-match`: every pin is exact (torch's `+cu128` local version exists only on the PyTorch index) and every file is hash-checked, so considering both indexes cannot substitute another build. These checks are static and are not execution evidence.
 
 ## Licence
 
