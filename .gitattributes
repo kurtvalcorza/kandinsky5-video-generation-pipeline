@@ -1,0 +1,6 @@
+# LF line endings for every text file the generator reads or writes (carried-file digests are computed on LF text).
+* text=auto eol=lf
+# Snapshot manifests are digest records; keep them byte-for-byte.
+weights/** -text
+# Executed notebooks and run logs are evidence; keep them byte-for-byte.
+docs/execution-evidence/** -text

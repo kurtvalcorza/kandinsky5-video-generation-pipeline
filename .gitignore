@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+outputs/
+.DS_Store
+
+# Model weights are fetched at run time; only the digest manifests are committable
+weights/**/*.safetensors
+weights/**/*.bin
+weights/**/*.pt
+weights/**/*.pth
+weights/**/*.ckpt
+weights/**/*.msgpack
+weights/**/*.h5
+weights/**/.cache/

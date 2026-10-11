@@ -1,0 +1,60 @@
+{
+  "format": "dimer_hf_snapshot",
+  "formatVersion": 1,
+  "modelKey": "kandinsky5-i2v-lite-5s",
+  "modelId": "kandinskylab/Kandinsky-5.0-I2V-Lite-5s-Diffusers",
+  "revision": "8d965626ab76734922b00e359ca2d8faab2e0417",
+  "files": [
+    {
+      "path": "model_index.json",
+      "bytes": 583,
+      "sha256": "4fe48006b9720e884aed38d457cada870933328aad2ab9e11c78084bfa6e03bc"
+    },
+    {
+      "path": "scheduler/scheduler_config.json",
+      "bytes": 140,
+      "sha256": "a4e9d731f8373db7f36b5d02bb13bcc4b7b88368fd11d4fe8c6c0c4818634f50"
+    },
+    {
+      "path": "transformer/config.json",
+      "bytes": 439,
+      "sha256": "f534ca1918a6d20debdc333a56dbbb789fc509f8826c6b37027f70c56d0c48f7"
+    },
+    {
+      "path": "transformer/diffusion_pytorch_model.safetensors",
+      "bytes": 4573130528,
+      "sha256": "0bfa417e53d1da3f4d3be1fb33b79e3692edb60404154e9dbeb78e29e21c8f55"
+    }
+  ],
+  "totalBytes": 4573131690,
+  "sharedComponentsFrom": {
+    "modelKey": "kandinsky5-t2v-lite-sft-5s",
+    "paths": [
+      "text_encoder/chat_template.json",
+      "text_encoder/config.json",
+      "text_encoder/generation_config.json",
+      "text_encoder/model-00001-of-00005.safetensors",
+      "text_encoder/model-00002-of-00005.safetensors",
+      "text_encoder/model-00003-of-00005.safetensors",
+      "text_encoder/model-00004-of-00005.safetensors",
+      "text_encoder/model-00005-of-00005.safetensors",
+      "text_encoder/model.safetensors.index.json",
+      "text_encoder_2/config.json",
+      "text_encoder_2/model.safetensors",
+      "text_encoder_2/preprocessor_config.json",
+      "tokenizer/merges.txt",
+      "tokenizer/preprocessor_config.json",
+      "tokenizer/tokenizer.json",
+      "tokenizer/tokenizer_config.json",
+      "tokenizer/vocab.json",
+      "tokenizer_2/merges.txt",
+      "tokenizer_2/special_tokens_map.json",
+      "tokenizer_2/tokenizer.json",
+      "tokenizer_2/tokenizer_config.json",
+      "tokenizer_2/vocab.json",
+      "vae/config.json",
+      "vae/diffusion_pytorch_model.safetensors"
+    ],
+    "verifiedIdentical": "same bytes and sha256 in both repositories at the pinned revisions (Hub API, 2026-10-12)"
+  }
+}

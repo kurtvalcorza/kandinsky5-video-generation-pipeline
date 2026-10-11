@@ -1,0 +1,42 @@
+[project]
+name = "kandinsky5-video-generation-pipeline"
+version = "0.1.0"
+description = "DIMER pipeline for Kandinsky 5.0 Video Lite (kandinskylab/Kandinsky-5.0-T2V-Lite-sft-5s-Diffusers + Kandinsky-5.0-I2V-Lite-5s-Diffusers): text-to-video and image-to-video on a Kaggle T4 with a 4-bit text encoder, digest-verified weights and decoded-frame checks"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { file = "LICENSE" }
+authors = [{ name = "Kurt Valcorza" }]
+dependencies = [
+  "torch==2.11.0",
+  "torchvision==0.26.0",
+  "diffusers==0.40.0",
+  "transformers==5.16.1",
+  "accelerate==1.14.0",
+  "bitsandbytes==0.50.2",
+  "safetensors==0.8.0",
+  "huggingface-hub==1.32.0",
+  "numpy==2.5.3",
+  "pillow==11.3.0",
+  "imageio==2.37.2",
+  "imageio-ffmpeg==0.6.0",
+]
+[project.optional-dependencies]
+dev = ["pytest==8.4.2", "ruff==0.16.6"]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[tool.hatch.build.targets.wheel]
+packages = ["src/kandinsky5_video_pipeline"]
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tools"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+src = ["src", "tests", "tools"]
+extend-exclude = ["tutorials"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

@@ -1,0 +1,150 @@
+{
+  "format": "dimer_hf_snapshot",
+  "formatVersion": 1,
+  "modelKey": "kandinsky5-t2v-lite-sft-5s",
+  "modelId": "kandinskylab/Kandinsky-5.0-T2V-Lite-sft-5s-Diffusers",
+  "revision": "5c74c11b3ecfb96249b588d17aebd59f3fd9a080",
+  "files": [
+    {
+      "path": "model_index.json",
+      "bytes": 583,
+      "sha256": "12107603816f4a01f76c5731f3eaf080561a993e7623eea8f90702a5022499d2"
+    },
+    {
+      "path": "scheduler/scheduler_config.json",
+      "bytes": 140,
+      "sha256": "a4e9d731f8373db7f36b5d02bb13bcc4b7b88368fd11d4fe8c6c0c4818634f50"
+    },
+    {
+      "path": "text_encoder/chat_template.json",
+      "bytes": 1050,
+      "sha256": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96"
+    },
+    {
+      "path": "text_encoder/config.json",
+      "bytes": 1374,
+      "sha256": "77d9ec7321cc572e3579e2c84799c9cadaded63c49ce93b101733349fc330c43"
+    },
+    {
+      "path": "text_encoder/generation_config.json",
+      "bytes": 216,
+      "sha256": "0a3aea82869fe29f20dc95ccf3e2bcff380eca1f5ad6447a4a4b37110b08e43e"
+    },
+    {
+      "path": "text_encoder/model-00001-of-00005.safetensors",
+      "bytes": 3900233256,
+      "sha256": "e97b877e47fde53a6c6e77aafb36e58e91ee9d95c4a3eeac6f1b5c0e6a1c986e"
+    },
+    {
+      "path": "text_encoder/model-00002-of-00005.safetensors",
+      "bytes": 3864726320,
+      "sha256": "a9a300a43b4724eee2abe7c18ceb26768d0ab011eb0cad19d9bfd2476a24d024"
+    },
+    {
+      "path": "text_encoder/model-00003-of-00005.safetensors",
+      "bytes": 3864726424,
+      "sha256": "111223d173e00bbee81cba1216fad28668df3476706b7fd26f4d5b50f8b3a507"
+    },
+    {
+      "path": "text_encoder/model-00004-of-00005.safetensors",
+      "bytes": 3864733680,
+      "sha256": "ef47f634fa57d46ee134edcc09f34085a47da1e16c12a2abe0d67118be6d72ed"
+    },
+    {
+      "path": "text_encoder/model-00005-of-00005.safetensors",
+      "bytes": 1089994880,
+      "sha256": "0c859795ad3a627a9b95bcb762e059d5b768a4a36fdd4affeff269d93fdecc67"
+    },
+    {
+      "path": "text_encoder/model.safetensors.index.json",
+      "bytes": 57619,
+      "sha256": "73b333b0b16e5286ddba615d2caebcd495cf7e616f52eb217a81781393d79de9"
+    },
+    {
+      "path": "text_encoder_2/config.json",
+      "bytes": 4519,
+      "sha256": "8a09b467700c58138c29d53c605b34ebc69beaadd13274a8a2af8ad2c2f4032a"
+    },
+    {
+      "path": "text_encoder_2/model.safetensors",
+      "bytes": 1710540580,
+      "sha256": "a2bf730a0c7debf160f7a6b50b3aaf3703e7e88ac73de7a314903141db026dcb"
+    },
+    {
+      "path": "text_encoder_2/preprocessor_config.json",
+      "bytes": 316,
+      "sha256": "910e70b3956ac9879ebc90b22fb3bc8a75b6a0677814500101a4c072bd7857bd"
+    },
+    {
+      "path": "tokenizer/merges.txt",
+      "bytes": 1671839,
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+    },
+    {
+      "path": "tokenizer/preprocessor_config.json",
+      "bytes": 350,
+      "sha256": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0"
+    },
+    {
+      "path": "tokenizer/tokenizer.json",
+      "bytes": 7031645,
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    {
+      "path": "tokenizer/tokenizer_config.json",
+      "bytes": 5702,
+      "sha256": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56"
+    },
+    {
+      "path": "tokenizer/vocab.json",
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    {
+      "path": "tokenizer_2/merges.txt",
+      "bytes": 524619,
+      "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"
+    },
+    {
+      "path": "tokenizer_2/special_tokens_map.json",
+      "bytes": 389,
+      "sha256": "f8c0d6c39aee3f8431078ef6646567b0aba7f2246e9c54b8b99d55c22b707cbf"
+    },
+    {
+      "path": "tokenizer_2/tokenizer.json",
+      "bytes": 2224003,
+      "sha256": "a83e0809aa4c3af7208b2df632a7a69668c6d48775b3c3fe4e1b1199d1f8b8f4"
+    },
+    {
+      "path": "tokenizer_2/tokenizer_config.json",
+      "bytes": 905,
+      "sha256": "deef455e52fa5e8151e339add0582e4235f066009601360999d3a9cda83b1129"
+    },
+    {
+      "path": "tokenizer_2/vocab.json",
+      "bytes": 961143,
+      "sha256": "3f0c4f7d2086b61b38487075278ea9ed04edb53a03cbb045b86c27190fa8fb69"
+    },
+    {
+      "path": "transformer/config.json",
+      "bytes": 441,
+      "sha256": "a115648250c81c04f1ea6b78c59a433990e02409995b39c7857328c302342667"
+    },
+    {
+      "path": "transformer/diffusion_pytorch_model.safetensors",
+      "bytes": 4573130528,
+      "sha256": "9bd1cb1e67d07de19458b9ad288b906815411c68dad7910d042ceb66f61f9f44"
+    },
+    {
+      "path": "vae/config.json",
+      "bytes": 718,
+      "sha256": "8dd1ef5ce49d2a56cdb5ea4c6553244320cd7185918463578c4c08a31f55e50a"
+    },
+    {
+      "path": "vae/diffusion_pytorch_model.safetensors",
+      "bytes": 985943868,
+      "sha256": "7c68a6295f9034a88225fbafb1f3258291a08d57a1fdb938233fa57b1b8f4883"
+    }
+  ],
+  "totalBytes": 23869293940
+}
