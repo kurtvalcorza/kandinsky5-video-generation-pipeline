@@ -425,10 +425,15 @@ def run_capability(run: Run, capability: str, *, seed: int | None = None, label:
 
 
 def write_video(frames_u8: Any, path: Path, fps: int) -> None:
-    """Encode uint8 frames as H.264 mp4 with diffusers' exporter (imageio + imageio-ffmpeg backend)."""
-    from diffusers.utils import export_to_video
+    """Encode uint8 frames as H.264 mp4 with diffusers' exporter (imageio + imageio-ffmpeg backend).
 
-    export_to_video([frame for frame in frames_u8], str(path), fps=fps)
+    diffusers 0.40.0 multiplies numpy frames by 255 (it expects floats in 0..1), so uint8 arrays would overflow; PIL
+    images are passed through unscaled.
+    """
+    from diffusers.utils import export_to_video
+    from PIL import Image
+
+    export_to_video([Image.fromarray(frame) for frame in frames_u8], str(path), fps=fps)
 
 
 def selected_capabilities(run: Run) -> tuple[str, ...]:

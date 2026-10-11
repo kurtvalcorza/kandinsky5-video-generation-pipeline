@@ -129,3 +129,21 @@ def test_a_stage_without_its_inputs_names_the_missing_step(run_dirs) -> None:
     assert ts.main(["--root", str(root), "--weights", str(weights), "--stage", "encode"]) == 2
     error = json.loads((root / "state" / "encode.error.json").read_text(encoding="utf-8"))
     assert "inputs.json is missing" in error["message"]
+
+
+def test_write_video_passes_pil_frames_so_uint8_is_not_rescaled(monkeypatch, tmp_path: Path) -> None:
+    """diffusers 0.40.0 export_to_video computes (frame * 255).astype(uint8) for numpy frames; uint8 input must not take that branch."""
+    import sys
+    import types
+
+    from PIL import Image
+
+    captured = {}
+    fake = types.ModuleType("diffusers.utils")
+    fake.export_to_video = lambda frames, path, fps: captured.update(frames=frames, path=path, fps=fps)
+    monkeypatch.setitem(sys.modules, "diffusers", types.ModuleType("diffusers"))
+    monkeypatch.setitem(sys.modules, "diffusers.utils", fake)
+    frames = (moving_frames(3, 32, 32) * 255).astype(np.uint8)
+    ts.write_video(frames, tmp_path / "x.mp4", 24)
+    assert all(isinstance(f, Image.Image) for f in captured["frames"]) and captured["fps"] == 24
+    assert np.array_equal(np.asarray(captured["frames"][1]), frames[1])
