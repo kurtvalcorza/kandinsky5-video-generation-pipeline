@@ -36,10 +36,10 @@ REFUSED_SUFFIXES = (".bin", ".pt", ".pth", ".ckpt", ".pkl", ".pickle", ".msgpack
 
 # Component licences, each checked against its upstream source (see MODEL_CARD.md, "Licences").
 COMPONENT_LICENSES = {
-    "transformer": "MIT (kandinskylab card metadata; github.com/kandinskylab/kandinsky-5 LICENSE)",
+    "transformer": "MIT (kandinskylab card metadata; LICENSE of the kandinskylab/kandinsky-5 source repository)",
     "vae": "Tencent Hunyuan Community License (HunyuanVideo 3D VAE; territory excludes the EU, the UK and South Korea)",
     "text_encoder": "Apache-2.0 (Qwen2.5-VL-7B-Instruct)",
-    "text_encoder_2": "MIT (OpenAI CLIP ViT-L/14; github.com/openai/CLIP LICENSE)",
+    "text_encoder_2": "MIT (OpenAI CLIP ViT-L/14; LICENSE of the openai/CLIP source repository)",
 }
 
 # Default image-to-video input: a CC0 photograph from Wikimedia Commons, pinned by URL, size and SHA-256.
@@ -52,7 +52,7 @@ SAMPLE_IMAGE_UPLOADED = "2018-05-28T02:08:48Z"
 SAMPLE_IMAGE_LICENSE = "CC0 1.0 (Creative Commons Zero, public domain dedication)"
 SAMPLE_IMAGE_AUTHOR = "P.A.V. Mahusay (Wikimedia Commons user Pavmahusay), own work"
 SAMPLE_IMAGE_NAME = "mayon_volcano_albay_toe.jpg"
-USER_AGENT = "kandinsky5-video-generation-pipeline/0.1 (DIMER tutorial; https://github.com/kurtvalcorza/kandinsky5-video-generation-pipeline)"
+USER_AGENT = "kandinsky5-video-generation-pipeline/0.1 (DIMER tutorial notebook)"
 
 
 def sha256_file(path: Path, chunk: int = 1 << 24) -> str:
