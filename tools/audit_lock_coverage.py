@@ -122,6 +122,25 @@ def cuda_stack_problems(lock_text: str) -> list[str]:
     return problems
 
 
+def install_split_problems(lock_text: str) -> list[str]:
+    """V-F2: the notebook's two-phase split covers every lock entry exactly once; phase A is only the +cu128 builds."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("build_notebook", ROOT / "tools" / "build_notebook.py")
+    build = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(build)
+    phase_a, phase_b = (lock_packages(text) for text in build.split_lock(lock_text, build.PHASE_A_PACKAGES))
+    locked = lock_packages(lock_text)
+    problems = []
+    if set(phase_a) & set(phase_b) or set(phase_a) | set(phase_b) != set(locked):
+        problems.append("the two-phase split does not cover every lock entry exactly once")
+    if sorted(phase_a) != sorted(build.PHASE_A_PACKAGES) or not all(v.endswith(CUDA_LOCAL_VERSION) for v in phase_a.values()):
+        problems.append(f"phase A (PyTorch cu128 index) must be exactly {build.PHASE_A_PACKAGES} as {CUDA_LOCAL_VERSION} builds, got {phase_a}")
+    if any(v.endswith(CUDA_LOCAL_VERSION) for v in phase_b.values()):
+        problems.append("phase B (PyPI) contains a +cu128 build that PyPI does not serve")
+    return problems
+
+
 def imported_modules(paths: list[Path]) -> dict[str, list[str]]:
     """`{top-level module: [file:line, ...]}` for every import statement, at any nesting depth."""
     found: dict[str, list[str]] = {}
@@ -142,7 +161,7 @@ def audit(lock_path: Path, library_root: Path | None = None) -> list[str]:
     """Return a list of problems (empty when the lock covers everything)."""
     lock_text = lock_path.read_text(encoding="utf-8")
     locked = lock_packages(lock_text)
-    problems: list[str] = cuda_stack_problems(lock_text)
+    problems: list[str] = cuda_stack_problems(lock_text) + install_split_problems(lock_text)
     print(f"CUDA stack: torch {locked.get('torch')}, torchvision {locked.get('torchvision')}, {sum(n.startswith('nvidia-') for n in locked)} nvidia-* wheels")
     stdlib = set(sys.stdlib_module_names) | {"__future__"}
     imports = imported_modules(RUNTIME_CODE)

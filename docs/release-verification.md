@@ -29,6 +29,10 @@ torch 2.11.0+cu128, transformers 5.16.1, diffusers 0.40.0, bitsandbytes 0.50.2).
 and the three rejected approaches listed in the notebook's **What did not work** section. It ran different code from this
 notebook and is not evidence for any notebook blob. Its two logs are committed byte for byte in `docs/development-probe/`.
 
+## Kaggle runs that did not reach a result
+
+- 2026-10-11T23:26Z, Kaggle T4, kernel `kurtvalcorza/dimer-nb2-kandinsky5-video-generation` v1, commit 89cc998: the runtime gate passed (`kaggle_run_type: Batch`); the isolated-environment install failed with a hash mismatch for `triton==3.6.0` because the mixed-index install took triton from the PyTorch mirror. Fixed by the two-phase single-index install; not an execution record for any later blob.
+
 ## Open items
 
 - Size gate: the 28.4 GB weights set is above the 9 GB publication convenience gate; **not waived**.

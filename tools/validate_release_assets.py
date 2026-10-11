@@ -83,12 +83,20 @@ FORBIDDEN_IN_CODE = (
     ("archive extractall", re.compile(r"\.extractall\s*\(")),
     ("notebook magic or shell escape (SRC6)", re.compile(r"(?m)^\s*[%!]|get_ipython\(\)")),
     ("unhashed or source install (ENV11)", re.compile(r"--no-binary|--no-build-isolation|--trusted-host")),
-    ("extra index other than the PyTorch cu128 index (ENV11)", re.compile(r"--extra-index-url(?!', 'https://download\.pytorch\.org/whl/cu128')")),
+    ("cross-index install (ENV11, V-F2: each install phase must use exactly one index)", re.compile(r"--extra-index-url|unsafe-best-match|--index-strategy")),
     ("broad warning suppression (SRC11)", re.compile(r"filterwarnings\(\s*['\"]ignore['\"]\s*\)")),
     ("developer-local path (SRC7)", re.compile(r"[A-Za-z]:\\\\Users|/home/[a-z]|/Users/[A-Za-z]")),
     ("credential in source (OUT10)", re.compile(r"hf_[A-Za-z0-9]{30,}|HF_TOKEN\s*=")),
 )
-KERNEL_PACKAGE_IMPORT = re.compile(rf"^\s*(?:from|import)\s+{PACKAGE}\b", re.M)
+# V-F2: phase A (torch, torchvision) from the PyTorch cu128 index only, phase B from PyPI only, both --no-deps
+# --require-hashes, then `uv pip check`.
+TWO_PHASE_INSTALL = (
+    "def split_lock(",
+    "(('https://download.pytorch.org/whl/cu128', 'requirements-phase-a-pytorch.txt'), ('https://pypi.org/simple', 'requirements-phase-b-pypi.txt'))",
+    "'--no-deps', '--require-hashes', '--only-binary', ':all:', '--index-url', index_url,",
+    "[str(UV), 'pip', 'check', '--python', str(PYTHON)]",
+)
+KERNEL_PACKAGE_IMPORT =re.compile(rf"^\s*(?:from|import)\s+{PACKAGE}\b", re.M)
 REQUIRED_CARD_HEADINGS = [
     (4, "Description"), (4, "Intended Use and Limitations"), (6, "Primary Intended Uses"), (6, "Primary Intended Users"),
     (6, "Out-of-scope use cases"), (4, "Factors"), (6, "Groups"), (6, "Instrumentation"), (6, "Environment"), (4, "Metrics"),
@@ -210,6 +218,9 @@ def notebook_problems(path: Path) -> list[str]:
     for tag in SECTION_TAGS:
         if tag not in markdown:
             problems.append(f"section tag {tag} is never used (GDL12)")
+    for fragment in TWO_PHASE_INSTALL:
+        if fragment not in code:
+            problems.append(f"install cell lacks the two-phase single-index install fragment {fragment!r} (ENV11, V-F2)")
     for phrase in ("**This notebook runs on Kaggle only.**", "KAGGLE_KERNEL_RUN_TYPE", "uncalibrated tutorial evidence", "docs/development-probe/", "Predict → Change one thing → Run → Observe → Explain", "**Conclusion template.**", "**Transfer.**", "development-run evidence", "Do not upload confidential or restricted", "Kaggle", "**Duration (estimate):**"):
         if phrase not in markdown:
             problems.append(f"missing required phrase: {phrase!r}")

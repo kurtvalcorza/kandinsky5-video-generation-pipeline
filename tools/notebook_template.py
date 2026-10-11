@@ -287,7 +287,9 @@ TEMPLATE = {
                 "The first cell writes the files this notebook carries — the repository's small package (prompt, image and setting "
                 "validation; pinned identities; frame checks), the stage runner, the hash-locked requirements, the two snapshot "
                 "manifests and the licence — and checks each against its recorded SHA-256. The second downloads a pinned `uv`, builds "
-                "an isolated Python 3.12 environment from the lock with `--require-hashes --only-binary :all:`, and defines "
+                "an isolated Python 3.12 environment from the lock in two phases — `torch` and `torchvision` from the PyTorch CUDA 12.8 "
+                "index, every other package from PyPI, each phase from that one index with `--no-deps --require-hashes "
+                "--only-binary :all:` — checks the result with `uv pip check`, and defines "
                 "`run_stage`, `load_record`, `show_image` and `show_video`, the helpers the learner cells use."
             ),
         },

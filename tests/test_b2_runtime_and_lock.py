@@ -48,14 +48,17 @@ def test_lock_check_fails_on_a_cuda_13_or_non_cu128_entry(old: str, new: str, me
     assert any(message in p for p in problems), problems
 
 
-def test_install_cell_reaches_only_pypi_and_the_cu128_index() -> None:
+def test_install_cell_uses_two_single_index_phases() -> None:
+    """V-F2: each install phase reads exactly one index; no cross-index choice anywhere in the notebook."""
     nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
     code = "\n".join(c["source"] for c in nb["cells"] if c["cell_type"] == "code")
-    assert "'--extra-index-url', 'https://download.pytorch.org/whl/cu128', '--index-strategy', 'unsafe-best-match'" in code
-    assert "'--require-hashes'" in code
-    pattern = dict(validator.FORBIDDEN_IN_CODE)["extra index other than the PyTorch cu128 index (ENV11)"]
-    assert not pattern.search(code)
-    assert pattern.search(code.replace("https://download.pytorch.org/whl/cu128", "https://example.org/simple"))
+    for fragment in validator.TWO_PHASE_INSTALL:
+        assert fragment in code, fragment
+    for forbidden in ("--extra-index-url", "unsafe-best-match", "--index-strategy"):
+        assert forbidden not in code
+    pattern = dict(validator.FORBIDDEN_IN_CODE)["cross-index install (ENV11, V-F2: each install phase must use exactly one index)"]
+    old_b2_flags = "'--index-url', 'https://pypi.org/simple', '--extra-index-url', 'https://download.pytorch.org/whl/cu128', '--index-strategy', 'unsafe-best-match'"
+    assert pattern.search(old_b2_flags)
 
 
 def test_check_cell_refuses_a_non_kaggle_linux_session(monkeypatch, no_gpu_probe) -> None:
