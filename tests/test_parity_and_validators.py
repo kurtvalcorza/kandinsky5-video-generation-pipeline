@@ -123,3 +123,23 @@ def test_lock_audit_passes_and_fails_when_a_backend_is_removed(tmp_path: Path) -
     copy.write_text(without, encoding="utf-8")
     problems = lock_audit.audit(copy)
     assert any("torchvision" in p for p in problems)
+
+
+def test_recorded_evidence_is_cited_byte_exact() -> None:
+    """Every evidence file cited in docs/release-verification.md exists and matches its cited SHA-256."""
+    text = (ROOT / "docs" / "release-verification.md").read_text(encoding="utf-8")
+    assert validator.EVIDENCE_REF.findall(text), "the recorded Kaggle run must cite its evidence files"
+    assert validator.evidence_problems(text) == []
+
+
+def test_evidence_check_rejects_a_wrong_digest() -> None:
+    text = (ROOT / "docs" / "release-verification.md").read_text(encoding="utf-8")
+    rel, digest = validator.EVIDENCE_REF.findall(text)[0]
+    wrong = digest[:-1] + ("0" if digest[-1] != "0" else "1")
+    problems = validator.evidence_problems(text.replace(digest, wrong))
+    assert any("SHA-256 differs" in p for p in problems)
+
+
+def test_evidence_check_rejects_a_missing_file() -> None:
+    text = "**Status: Candidate**\n`docs/execution-evidence/2099-01-01/missing.ipynb` SHA-256 `" + "0" * 64 + "`\n"
+    assert any("missing evidence" in p for p in validator.evidence_problems(text))

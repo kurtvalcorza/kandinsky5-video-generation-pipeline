@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import hashlib
 import json
 import re
 import sys
@@ -281,8 +282,27 @@ def card_problems() -> list[str]:
     for doc in ("STATUS.md", "docs/WEIGHTS.md"):
         if "not waived" not in (ROOT / doc).read_text(encoding="utf-8"):
             problems.append(f"{doc} must record the 9 GB size gate as open and not waived (owner decision D-6)")
-    if "Candidate — no recorded execution" not in verification:
-        problems.append("docs/release-verification.md must state 'Candidate — no recorded execution' (REL1, REL14)")
+    if "**Status: Candidate" not in verification:
+        problems.append("docs/release-verification.md must state the status Candidate (REL14; Release-grade is an owner decision)")
+    problems += evidence_problems(verification)
+    return problems
+
+
+EVIDENCE_REF = re.compile(r"`(docs/execution-evidence/[^`]+)` SHA-256 `([0-9a-f]{64})`")
+
+
+def evidence_problems(verification: str) -> list[str]:
+    """Every evidence file the verification doc cites must exist, be byte-identical to the cited SHA-256, and stay -text."""
+    problems = []
+    cited = EVIDENCE_REF.findall(verification)
+    if "Candidate — no recorded execution" not in verification and not cited:
+        problems.append("docs/release-verification.md records an execution but cites no evidence file with its SHA-256 (REL1)")
+    for rel, digest in cited:
+        path = ROOT / rel
+        if not path.is_file():
+            problems.append(f"docs/release-verification.md cites missing evidence {rel}")
+        elif hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+            problems.append(f"{rel}: SHA-256 differs from the value cited in docs/release-verification.md")
     return problems
 
 

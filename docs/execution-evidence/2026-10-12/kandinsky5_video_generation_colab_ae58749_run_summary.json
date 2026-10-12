@@ -1,0 +1,305 @@
+{
+ "identity": {
+  "repository": "kandinsky5-video-generation-pipeline",
+  "candidate_sha": "ae58749337caeeb7e75f6254ba30a8589f61f16a",
+  "notebook": "tutorials/kandinsky5_video_generation_colab.ipynb",
+  "committed_blob": "659a276f7c55fd79bc621ca001cda926581a18d8",
+  "fetched_blob_verified": true,
+  "kaggle_docker_image": "gcr.io/kaggle-gpu-images/python@sha256:2757e0c7d1e0a9cb43da657b97e223c321a98f5014bdf64f44f2f6b083ad2b2f",
+  "kaggle_run_type": "Batch",
+  "os": "Linux-6.18.48+-x86_64-with-glibc2.39",
+  "python": "3.13.15",
+  "cpu_count": 4,
+  "image_versions_before_run": {
+   "torch": "2.11.0+cu128",
+   "numpy": "2.1.3",
+   "transformers": "5.16.1",
+   "tokenizers": "0.23.1",
+   "safetensors": "0.8.0",
+   "huggingface-hub": "1.29.0",
+   "pillow": "12.3.0",
+   "nbclient": "0.10.2",
+   "ipykernel": "6.17.1"
+  },
+  "started": "2026-10-11T23:40:29Z",
+  "nvidia_smi": "Tesla T4, 15360 MiB, 580.178.04\nTesla T4, 15360 MiB, 580.178.04",
+  "hf_cache_clean_at_start": true
+ },
+ "runner": {
+  "ok": true,
+  "started": "2026-10-11T23:40:30Z",
+  "passes": [
+   {
+    "attempt": 1,
+    "started": "2026-10-11T23:40:30Z",
+    "ok": true,
+    "wall_s": 3198.8
+   }
+  ],
+  "wall_s": 3198.9,
+  "finished": "2026-10-12T00:33:49Z"
+ },
+ "cells": [
+  {
+   "cell": 8,
+   "status": "ok",
+   "started": "2026-10-11T23:40:32.344976Z",
+   "ended": "2026-10-11T23:40:32.398652Z",
+   "stdout_tail": "{'gpu': 'Tesla T4', 'gpu_mib': 15360, 'compute_capability': '7.5', 'host_ram_available_gb': 32.2, 'kaggle': True, 'kernel_python': '3.13.15', 'run_directory': '/content/outputs/kandinsky5_video/42f22852906e', 'weights': '/tmp/kandinsky5_video_weights', 'free_disk_gb': 1149}\n",
+   "error": null
+  },
+  {
+   "cell": 11,
+   "status": "ok",
+   "started": "2026-10-11T23:40:32.411743Z",
+   "ended": "2026-10-11T23:40:32.483529Z",
+   "stdout_tail": "{'carried_files': 10, 'verified': True, 'repository': 'kurtvalcorza/kandinsky5-video-generation-pipeline', 'revision': 'd59bd5e062da6ef3048728406c031a3ba96c8620', 'generator': 'build_notebook.py/3.3-k5video'}\n",
+   "error": null
+  },
+  {
+   "cell": 13,
+   "status": "ok",
+   "started": "2026-10-11T23:40:32.487466Z",
+   "ended": "2026-10-11T23:43:27.248176Z",
+   "stdout_tail": "-metadata==9.0.1\n + jinja2==3.1.6\n + markdown-it-py==4.2.0\n + markupsafe==3.0.4\n + mdurl==0.1.2\n + mpmath==1.3.0\n + networkx==3.7\n + numpy==2.5.3\n + nvidia-cublas-cu12==12.8.4.1\n + nvidia-cuda-cupti-cu12==12.8.90\n + nvidia-cuda-nvrtc-cu12==12.8.93\n + nvidia-cuda-runtime-cu12==12.8.90\n + nvidia-cudnn-cu12==9.19.0.56\n + nvidia-cufft-cu12==11.3.3.83\n + nvidia-cufile-cu12==1.13.1.3\n + nvidia-curand-cu12==10.3.9.90\n + nvidia-cusolver-cu12==11.7.3.90\n + nvidia-cusparse-cu12==12.5.8.93\n + nvidia-cusparselt-cu12==0.7.1\n + nvidia-nccl-cu12==2.28.9\n + nvidia-nvjitlink-cu12==12.8.93\n + nvidia-nvshmem-cu12==3.4.5\n + nvidia-nvtx-cu12==12.8.90\n + packaging==26.3\n + pillow==11.3.0\n + psutil==7.2.2\n + pygments==2.21.0\n + pyyaml==6.0.3\n + regex==2026.9.29\n + requests==2.34.2\n + rich==15.0.0\n + safetensors==0.8.0\n + setuptools==81.0.0\n + shellingham==1.5.4\n + sympy==1.14.0\n + tokenizers==0.23.3\n + tqdm==4.70.1\n + transformers==5.16.1\n + triton==3.6.0\n + typer==0.27.3\n + typing-extensions==4.16.0\n + urllib3==2.8.0\n + zipp==4.1.1\nUsing Python 3.12.12 environment at: /tmp/kandinsky5_video_env_42f22852906e/venv\nChecked 66 packages in 2ms\nAll installed packages are compatible\n{'notebook_source': 'd59bd5e062da6ef3048728406c031a3ba96c8620', 'python': '3.12.12', 'torch': '2.11.0+cu128', 'diffusers': '0.40.0', 'transformers': '5.16.1', 'bitsandbytes': '0.50.2', 'torch_cuda': '12.8', 'cuda': True, 'locked_packages': 66, 'environment': '/tmp/kandinsky5_video_env_42f22852906e/venv', 'setup_seconds': 175}\n",
+   "error": null
+  },
+  {
+   "cell": 16,
+   "status": "ok",
+   "started": "2026-10-11T23:43:27.251805Z",
+   "ended": "2026-10-11T23:48:01.103416Z",
+   "stdout_tail": "Running stage 'weights' in the isolated environment; log: /content/outputs/kandinsky5_video/42f22852906e/logs/weights.log\n{'model_id': 'kandinskylab/Kandinsky-5.0-T2V-Lite-sft-5s-Diffusers', 'revision': '5c74c11b3ecfb96249b588d17aebd59f3fd9a080', 'files': 28, 'total_gb': 23.87}\nWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n{'snapshot': 'kandinsky5-t2v-lite-sft-5s', 'fetched_files': 28, 'download_seconds': 131.5, 'verified_files': 28, 'verify_seconds': 107.0}\n{'model_id': 'kandinskylab/Kandinsky-5.0-I2V-Lite-5s-Diffusers', 'revision': '8d965626ab76734922b00e359ca2d8faab2e0417', 'files': 4, 'total_gb': 4.57}\n{'snapshot': 'kandinsky5-i2v-lite-5s', 'fetched_files': 4, 'download_seconds': 20.3, 'verified_files': 4, 'verify_seconds': 14.2}\n{'stage': 'weights', 'status': 'ok', 'seconds': 273.5, 'host_rss_peak_gb': 2.95}\n",
+   "error": null
+  },
+  {
+   "cell": 19,
+   "status": "ok",
+   "started": "2026-10-11T23:48:01.108777Z",
+   "ended": "2026-10-11T23:48:02.416036Z",
+   "stdout_tail": "e': 'CC0 1.0 (Creative Commons Zero, public domain dedication)', 'author': 'P.A.V. Mahusay (Wikimedia Commons user Pavmahusay), own work', 'sha256': '138f5ff946e1e5a228270b838beacaa882983c2fea4ffb7e82bf4eefa1df1c01'}}\n{'prepared_image': 'outputs/i2v_conditioning.png', 'source_size': [3264, 1840], 'resized_to': [908, 512], 'crop_box': [70, 0, 838, 512], 'output_size': [768, 512], 'fraction_of_resized_area_kept': 0.8458, 'note': 'resized with Lanczos to cover the output size, then centre-cropped; nothing else is changed'}\n{'contract': {'prompt': '3..1000 characters after trimming, printable text', 'image': 'JPEG/PNG/WEBP, at most 25 MiB, shorter side >= 256 px, longer side <= 8192 px, width/height in 0.5..2.5', 'settings': 'height and width multiples of 16 with height*width <= 393216; num_frames = 4k+1 <= 49; 1 <= steps <= 50; 1.0 <= guidance <= 10.0; 0 <= seed < 2**32'}}\n{'probe': 'empty prompt', 'rejected': 'T2V prompt is empty or shorter than 3 characters; describe the scene and the motion'}\n{'probe': 'image too small', 'rejected': 'image is 200x150 px; the shorter side must be at least 256 px'}\n{'probe': '48 frames (not 4k+1)', 'rejected': 'invalid generation settings: num_frames=48 must be 4k+1 and at most 49 (the VAE compresses time by 4)'}\n{'stage': 'prepare', 'status': 'ok', 'seconds': 1.0, 'host_rss_peak_gb': 0.25}\nthe prepared 768 x 512 conditioning image -> /content/outputs/kandinsky5_video/42f22852906e/outputs/i2v_conditioning.png\n<IPython.core.display.Image object>",
+   "error": null
+  },
+  {
+   "cell": 22,
+   "status": "ok",
+   "started": "2026-10-11T23:48:02.428581Z",
+   "ended": "2026-10-11T23:49:27.962186Z",
+   "stdout_tail": "UNEXPECTED |  |\nvision_model.encoder.layers.{0...23}.self_attn.k_proj.bias     | UNEXPECTED |  |\nvision_model.embeddings.class_embedding                        | UNEXPECTED |  |\nvision_model.post_layernorm.weight                             | UNEXPECTED |  |\nlogit_scale                                                    | UNEXPECTED |  |\nvision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  |\nvisual_projection.weight                                       | UNEXPECTED |  |\nvision_model.post_layernorm.bias                               | UNEXPECTED |  |\nvision_model.pre_layrnorm.weight                               | UNEXPECTED |  |\nvision_model.embeddings.position_embedding.weight              | UNEXPECTED |  |\ntext_projection.weight                                         | UNEXPECTED |  |\nNotes:\n- UNEXPECTED:\tcan be ignored when loading from different task/architecture; not ok if you expect identical arch.\n{'t2v': {'qwen': [1, 29, 3584], 'clip': [1, 768], 'finite': True, 'clip_tokens': 31, 'clip_truncated': False}}\n{'i2v': {'qwen': [1, 31, 3584], 'clip': [1, 768], 'finite': True, 'clip_tokens': 32, 'clip_truncated': False}}\n{'negative': {'qwen': [1, 32, 3584], 'clip': [1, 768], 'finite': True, 'clip_tokens': 31, 'clip_truncated': False}}\n{'encoder_load_seconds': 65.9, 'gpu_peak_gb': 6.72, 'gpu_allocated_after_release_gb': 0.01, 'seconds': 82.0, 'host_rss_peak_gb': 17.58}\n{'stage': 'encode', 'status': 'ok', 'seconds': 82.0, 'host_rss_peak_gb': 17.58}\n",
+   "error": null
+  },
+  {
+   "cell": 25,
+   "status": "ok",
+   "started": "2026-10-11T23:49:27.966116Z",
+   "ended": "2026-10-12T00:11:29.487575Z",
+   "stdout_tail": "████▊  | 39/50 [16:01<04:31, 24.72s/it]\n 80%|████████  | 40/50 [16:25<04:07, 24.71s/it]\n 82%|████████▏ | 41/50 [16:50<03:42, 24.72s/it]\n 84%|████████▍ | 42/50 [17:15<03:17, 24.72s/it]\n 86%|████████▌ | 43/50 [17:39<02:53, 24.74s/it]\n 88%|████████▊ | 44/50 [18:04<02:28, 24.75s/it]\n 90%|█████████ | 45/50 [18:29<02:03, 24.74s/it]\n 92%|█████████▏| 46/50 [18:54<01:38, 24.74s/it]\n 94%|█████████▍| 47/50 [19:18<01:14, 24.71s/it]\n 96%|█████████▌| 48/50 [19:43<00:49, 24.70s/it]\n 98%|█████████▊| 49/50 [20:08<00:24, 24.70s/it]\n100%|██████████| 50/50 [20:32<00:00, 24.70s/it]\n100%|██████████| 50/50 [20:32<00:00, 24.66s/it]\n{'capability': 't2v', 'precision': 'float16 (transformer and VAE)', 'load_seconds': 22.4, 'generate_seconds': 1285.1, 'gpu_peak_gb': 10.19, 'first_nonfinite_step': None, 'steps_completed': 50}\n{'frame_checks': {'shape_as_requested': True, 'all_values_finite': True, 'no_blank_frames': True, 'clip_has_motion': True, 'no_abrupt_cuts': True}, 'consecutive_change': {'mean': 0.01813, 'min': 0.01513, 'max': 0.01993}, 'blank_frames': 0, 'frozen_pairs': 0}\n{'video': {'file': 'kandinsky5_video_t2v.mp4', 'bytes': 223203, 'sha256': 'ec8385df56adb02f91dd932e3bd1efed1f27008353a1bf3a1f5b4a026c11a49a'}, 'strip': 'kandinsky5_video_t2v_strip.jpg'}\n{'stage': 't2v', 'status': 'ok', 'seconds': 1319.3, 'host_rss_peak_gb': 9.43}\ntext-to-video: first, middle and last frame -> /content/outputs/kandinsky5_video/42f22852906e/outputs/kandinsky5_video_t2v_strip.jpg\n<IPython.core.display.Image object>",
+   "error": null
+  },
+  {
+   "cell": 28,
+   "status": "ok",
+   "started": "2026-10-12T00:11:29.492197Z",
+   "ended": "2026-10-12T00:33:26.900357Z",
+   "stdout_tail": "████▊  | 39/50 [16:01<04:31, 24.65s/it]\n 80%|████████  | 40/50 [16:26<04:06, 24.66s/it]\n 82%|████████▏ | 41/50 [16:51<03:41, 24.64s/it]\n 84%|████████▍ | 42/50 [17:15<03:17, 24.63s/it]\n 86%|████████▌ | 43/50 [17:40<02:52, 24.64s/it]\n 88%|████████▊ | 44/50 [18:05<02:27, 24.64s/it]\n 90%|█████████ | 45/50 [18:29<02:03, 24.64s/it]\n 92%|█████████▏| 46/50 [18:54<01:38, 24.65s/it]\n 94%|█████████▍| 47/50 [19:19<01:13, 24.65s/it]\n 96%|█████████▌| 48/50 [19:43<00:49, 24.64s/it]\n 98%|█████████▊| 49/50 [20:08<00:24, 24.64s/it]\n100%|██████████| 50/50 [20:32<00:00, 24.62s/it]\n100%|██████████| 50/50 [20:32<00:00, 24.66s/it]\n{'capability': 'i2v', 'precision': 'float16 (transformer and VAE)', 'load_seconds': 19.1, 'generate_seconds': 1285.5, 'gpu_peak_gb': 10.2, 'first_nonfinite_step': None, 'steps_completed': 50}\n{'frame_checks': {'shape_as_requested': True, 'all_values_finite': True, 'no_blank_frames': True, 'clip_has_motion': True, 'no_abrupt_cuts': True}, 'consecutive_change': {'mean': 0.01146, 'min': 0.00716, 'max': 0.01645}, 'blank_frames': 0, 'frozen_pairs': 0}\n{'video': {'file': 'kandinsky5_video_i2v.mp4', 'bytes': 145070, 'sha256': '75a45a16d01b72fd934f059d0ad95e88e311054de1f81ad730526397c538998f'}, 'strip': 'kandinsky5_video_i2v_strip.jpg'}\n{'stage': 'i2v', 'status': 'ok', 'seconds': 1315.4, 'host_rss_peak_gb': 9.42}\nimage-to-video: first, middle and last frame -> /content/outputs/kandinsky5_video/42f22852906e/outputs/kandinsky5_video_i2v_strip.jpg\n<IPython.core.display.Image object>",
+   "error": null
+  },
+  {
+   "cell": 31,
+   "status": "ok",
+   "started": "2026-10-12T00:33:26.904738Z",
+   "ended": "2026-10-12T00:33:42.937662Z",
+   "stdout_tail": "tmp/kandinsky5_video_env_42f22852906e/venv/lib/python3.12/site-packages/transformers/image_processing_backends.py:135: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)\n  image = torch.from_numpy(image).contiguous()\n{'t2v': {'frame_checks_passed': True, 'own_prompt_similarity': 0.2855, 'swapped_prompt_similarity': 0.1402, 'margin': 0.1453, 'frames_closer_to_own_prompt': 1.0, 'frames_scored': 49}}\n{'i2v': {'frame_checks_passed': True, 'own_prompt_similarity': 0.294, 'swapped_prompt_similarity': 0.0998, 'margin': 0.1942, 'frames_closer_to_own_prompt': 1.0, 'frames_scored': 49}}\n{'i2v_first_frame_fidelity': {'mean_abs_diff': 0.01918, 'psnr_db': np.float64(33.28)}, 'i2v_clip_similarity_to_conditioning_image': {'first_frame': 0.9961, 'last_frame': 0.9065, 'mean': 0.9542}}\n{'stage': 'evaluate', 'status': 'ok', 'seconds': 14.9, 'host_rss_peak_gb': 3.4}\nt2v {'frame_checks_passed': True, 'own_prompt': 0.2855, 'swapped_prompt': 0.1402, 'margin': 0.1453, 'frames_closer_to_own_prompt': 1.0}\ni2v {'frame_checks_passed': True, 'own_prompt': 0.294, 'swapped_prompt': 0.0998, 'margin': 0.1942, 'frames_closer_to_own_prompt': 1.0}\n",
+   "error": null
+  },
+  {
+   "cell": 34,
+   "status": "ok",
+   "started": "2026-10-12T00:33:42.941190Z",
+   "ended": "2026-10-12T00:33:49.132948Z",
+   "stdout_tail": "Running stage 'report' in the isolated environment; log: /content/outputs/kandinsky5_video/42f22852906e/logs/report.log\n{'provenance': 'outputs/kandinsky5_video_provenance.json', 'journey': 'default', 'videos': {'t2v': 'kandinsky5_video_t2v.mp4', 'i2v': 'kandinsky5_video_i2v.mp4'}}\noutputs/:\n  - outputs/encode.json (0.8 KB)\n  - outputs/evaluation.json (8.9 KB)\n  - outputs/i2v.json (1.4 KB)\n  - outputs/i2v_conditioning.png (537.5 KB)\n  - outputs/kandinsky5_video_i2v.mp4 (141.7 KB)\n  - outputs/kandinsky5_video_i2v_strip.jpg (53.0 KB)\n  - outputs/kandinsky5_video_provenance.json (7.4 KB)\n  - outputs/kandinsky5_video_t2v.mp4 (218.0 KB)\n  - outputs/kandinsky5_video_t2v_strip.jpg (64.9 KB)\n  - outputs/prepare.json (2.0 KB)\n  - outputs/t2v.json (1.4 KB)\n  - outputs/weights.json (2.1 KB)\n{'stage': 'report', 'status': 'ok', 'seconds': 5.0, 'host_rss_peak_gb': 0.74}\n",
+   "error": null
+  },
+  {
+   "cell": 37,
+   "status": "ok",
+   "started": "2026-10-12T00:33:49.136793Z",
+   "ended": "2026-10-12T00:33:49.139844Z",
+   "stdout_tail": "Activity skipped (RUN_ACTIVITY is False).\n",
+   "error": null
+  },
+  {
+   "cell": 40,
+   "status": "ok",
+   "started": "2026-10-12T00:33:49.143287Z",
+   "ended": "2026-10-12T00:33:49.148587Z",
+   "stdout_tail": "BYOD skipped (USE_BYOD is False).\n",
+   "error": null
+  }
+ ],
+ "preserved_outputs": {
+  "kandinsky5_video/42f22852906e/LICENSE": {
+   "bytes": 11343,
+   "sha256": "f9da6567cb5a1828ccec41c7b72b70997fe6d9d63811b3f3177a7b01da52d138"
+  },
+  "kandinsky5_video/42f22852906e/requirements-phase-a-pytorch.txt": {
+   "bytes": 3812,
+   "sha256": "be57a7b42ce042430cf654b0a35046a7986770f99dbb7e266085a1dec926e4f0"
+  },
+  "kandinsky5_video/42f22852906e/requirements-phase-b-pypi.txt": {
+   "bytes": 83071,
+   "sha256": "7915d1937c3b93d8898ddeff936189815f2150007d7d11772a24fd5015b0b76b"
+  },
+  "kandinsky5_video/42f22852906e/requirements.txt": {
+   "bytes": 87123,
+   "sha256": "de677dcb1683877e31f2b7c2dba99e39c840ddeac549e48b242fd1237eb3ed01"
+  },
+  "kandinsky5_video/42f22852906e/source.json": {
+   "bytes": 2005,
+   "sha256": "f1eeaf39f27a29a611e94a8e8df584c4d963bf1c7e020c464a0956d1c80be824"
+  },
+  "kandinsky5_video/42f22852906e/tutorial_stages.py": {
+   "bytes": 33198,
+   "sha256": "fca3732bfb076cc32aa544f85bd98003faa6a8e989352be91be9b91090c9676c"
+  },
+  "kandinsky5_video/42f22852906e/outputs/encode.json": {
+   "bytes": 792,
+   "sha256": "203b274d1575d36971792da17cba3a9a927f7cbc2a25548d88379525d7629131"
+  },
+  "kandinsky5_video/42f22852906e/outputs/evaluation.json": {
+   "bytes": 9139,
+   "sha256": "26004ec3e4513340e6796e09a4e465c80155da601550bd60b5c72eb8d224142b"
+  },
+  "kandinsky5_video/42f22852906e/outputs/i2v.json": {
+   "bytes": 1403,
+   "sha256": "ccfbbffb14f4e68ed6b92dc6289d8c34bbc2f15c951aca6b73e25a37275274ff"
+  },
+  "kandinsky5_video/42f22852906e/outputs/i2v_conditioning.png": {
+   "bytes": 550426,
+   "sha256": "eb1bb716e65a74b0dc495f5cea284f0cfffcb49dcab8a18525903b36baf2a361"
+  },
+  "kandinsky5_video/42f22852906e/outputs/kandinsky5_video_i2v.mp4": {
+   "bytes": 145070,
+   "sha256": "75a45a16d01b72fd934f059d0ad95e88e311054de1f81ad730526397c538998f"
+  },
+  "kandinsky5_video/42f22852906e/outputs/kandinsky5_video_i2v_strip.jpg": {
+   "bytes": 54308,
+   "sha256": "a0749125179c9eead8f0ebf8a79e38dade57b8abb45b93012b01b19db379a877"
+  },
+  "kandinsky5_video/42f22852906e/outputs/kandinsky5_video_provenance.json": {
+   "bytes": 7587,
+   "sha256": "86f8cdd9e9d6a74995e41ef371184601d71dc35d9b8cf142fbaa3bf454990c07"
+  },
+  "kandinsky5_video/42f22852906e/outputs/kandinsky5_video_t2v.mp4": {
+   "bytes": 223203,
+   "sha256": "ec8385df56adb02f91dd932e3bd1efed1f27008353a1bf3a1f5b4a026c11a49a"
+  },
+  "kandinsky5_video/42f22852906e/outputs/kandinsky5_video_t2v_strip.jpg": {
+   "bytes": 66450,
+   "sha256": "cd0bb601f53b279cc90795d49c317fbe9fd8c8b0df55db2eb6abacca5dc7a796"
+  },
+  "kandinsky5_video/42f22852906e/outputs/prepare.json": {
+   "bytes": 2089,
+   "sha256": "955ab783709a45d06837b087abd30b12f3c34aeadabb7964143ca25b36a0754b"
+  },
+  "kandinsky5_video/42f22852906e/outputs/t2v.json": {
+   "bytes": 1405,
+   "sha256": "f5ac0aac832eef1edb4a613a36789423d14d175a1007345a3ffb416dabdc5a70"
+  },
+  "kandinsky5_video/42f22852906e/outputs/weights.json": {
+   "bytes": 2140,
+   "sha256": "5abea68870a632b26879377a9d9a940692efb2ebce9540a0a71fc5885774c004"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/__init__.py": {
+   "bytes": 1953,
+   "sha256": "c2c789f5c6ac14ab6b4ce38d0bd61b69f9789d070a5e1743c64284b1fe8a0444"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/checks.py": {
+   "bytes": 5529,
+   "sha256": "76e0ad5d91600c3554796bbf0cb3818e99251a10cebfb6768afefe6da31e7c69"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/inputs.py": {
+   "bytes": 7980,
+   "sha256": "cc53fbab9a81d65a525f63132c2daa639ddf21dcf9ad17a0dc060f8f07fc0839"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/pipeline.py": {
+   "bytes": 7975,
+   "sha256": "7fc281eceebccd4691d4f5440a1503c67adfa8ae6f5a3016303c1b90fc1f2427"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/__pycache__/__init__.cpython-312.pyc": {
+   "bytes": 1779,
+   "sha256": "6e5353a5ba7ba9fc42809a917c21da1cf4d66fe574695e1333ce8a5f189def07"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/__pycache__/checks.cpython-312.pyc": {
+   "bytes": 8310,
+   "sha256": "22ce145f1bdc2cf2ce7b54209c5114072c55284e9708d72b91ad17fc6c669ed4"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/__pycache__/inputs.cpython-312.pyc": {
+   "bytes": 10773,
+   "sha256": "4634fc65c9932c6e64bfa97d877b0025c1978466b7087f88989feeec6a34c2c5"
+  },
+  "kandinsky5_video/42f22852906e/src/kandinsky5_video_pipeline/__pycache__/pipeline.cpython-312.pyc": {
+   "bytes": 10467,
+   "sha256": "e6068385aa1b45ee9f437a219647029a24958cf5c9101e901f32437a0453e73c"
+  },
+  "kandinsky5_video/42f22852906e/state/i2v_frames.npy": {
+   "bytes": 57802880,
+   "sha256": "654894cc158ec3919ddac1dc648599a45bfecd56ed2b11773119a8605888735a"
+  },
+  "kandinsky5_video/42f22852906e/state/inputs.json": {
+   "bytes": 2089,
+   "sha256": "955ab783709a45d06837b087abd30b12f3c34aeadabb7964143ca25b36a0754b"
+  },
+  "kandinsky5_video/42f22852906e/state/prompt_embeds.safetensors": {
+   "bytes": 664792,
+   "sha256": "f72c17a72d40811b2668833baca6ff06bbc1943efc6ba79a281f7b0546782f25"
+  },
+  "kandinsky5_video/42f22852906e/state/t2v_frames.npy": {
+   "bytes": 57802880,
+   "sha256": "d98d6c947b6afd68669c6cc1c94f45bc7b943f790f5efe9ae46149b42a28a81f"
+  },
+  "kandinsky5_video/42f22852906e/logs/encode.log": {
+   "bytes": 13237,
+   "sha256": "d06f0a821bcb3d148b3299856cbcdca41f0775cc3d820a47d4a31d7074fd7561"
+  },
+  "kandinsky5_video/42f22852906e/logs/evaluate.log": {
+   "bytes": 3678,
+   "sha256": "0f6e430c1da330403c27f7ee43aef5e038f8d002d281ac87ce3d08749b7fe177"
+  },
+  "kandinsky5_video/42f22852906e/logs/i2v.log": {
+   "bytes": 4146,
+   "sha256": "e5db4b11d54949fdc4d355e3392d1776dea7fdaf6b165100e071de75640dcd11"
+  },
+  "kandinsky5_video/42f22852906e/logs/prepare.log": {
+   "bytes": 2047,
+   "sha256": "d64b4ad8e45c7f56b9e821ac6be69d3414392676625a8953779bde1edb44dd04"
+  },
+  "kandinsky5_video/42f22852906e/logs/report.log": {
+   "bytes": 749,
+   "sha256": "4f63cd08a75f353528432c06a5bfd1bbc93158301241f014c10fa556d39e12e5"
+  },
+  "kandinsky5_video/42f22852906e/logs/t2v.log": {
+   "bytes": 4147,
+   "sha256": "1098604e01224501669d6c2f0a890b92e936a0afedde41749de2307d8ec0d9c6"
+  },
+  "kandinsky5_video/42f22852906e/logs/weights.log": {
+   "bytes": 795,
+   "sha256": "9c45a5c660d2a6b27336b94b97e9123ee00e890d9958ab355afb0f173191556e"
+  },
+  "kandinsky5_video/42f22852906e/weights/kandinsky5-i2v-lite-5s/dimer-base-manifest.json": {
+   "bytes": 2156,
+   "sha256": "8726d0124d66d37224aadf89191f34dd6416e9d1279dc63cf68c7b2b14173abe"
+  },
+  "kandinsky5_video/42f22852906e/weights/kandinsky5-t2v-lite-sft-5s/dimer-base-manifest.json": {
+   "bytes": 5001,
+   "sha256": "e6b22065639485f576902559da1a9fad3b00c5fd90cc6d807897ec3912ef0aa0"
+  }
+ },
+ "staged_weights": [],
+ "executor_torch_after_run": {
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "device": "Tesla T4"
+ },
+ "finished": "2026-10-12T00:33:58Z"
+}
