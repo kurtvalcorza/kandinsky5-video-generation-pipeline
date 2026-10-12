@@ -9,6 +9,7 @@ date_published: "2025-10-01"
 
 # Kandinsky 5.0 Video Lite (T2V sft 5s + I2V 5s) — DIMER pipeline
 
+[![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)](https://kaggle.com/kernels/welcome?src=https://github.com/kurtvalcorza/kandinsky5-video-generation-pipeline/blob/main/tutorials/kandinsky5_video_generation_colab.ipynb)
 [![Hugging Face T2V](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Kandinsky--5.0--T2V--Lite--sft--5s-ffcc4d?style=flat)](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Lite-sft-5s-Diffusers/tree/5c74c11b3ecfb96249b588d17aebd59f3fd9a080)
 [![Hugging Face I2V](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Kandinsky--5.0--I2V--Lite--5s-ffcc4d?style=flat)](https://huggingface.co/kandinskylab/Kandinsky-5.0-I2V-Lite-5s-Diffusers/tree/8d965626ab76734922b00e359ca2d8faab2e0417)
 [![Upstream](https://img.shields.io/badge/Upstream-kandinskylab%2Fkandinsky--5-181717?style=flat&logo=github&logoColor=white)](https://github.com/kandinskylab/kandinsky-5)
@@ -24,7 +25,7 @@ date_published: "2025-10-01"
 
 | Notebook | Kind | Profile | Mode | Runtime | Status |
 |---|---|---|---|---|---|
-| [`tutorials/kandinsky5_video_generation_colab.ipynb`](tutorials/kandinsky5_video_generation_colab.ipynb) | `TUTORIAL` | `MULTI-CAPABILITY` | `GUIDED` | Kaggle T4 only | Candidate — no recorded execution |
+| [`tutorials/kandinsky5_video_generation_colab.ipynb`](tutorials/kandinsky5_video_generation_colab.ipynb) | `TUTORIAL` | `MULTI-CAPABILITY` | `GUIDED` | Kaggle T4 only | Candidate — default Kaggle T4 run recorded at `ae58749`; BYOD journey not yet run |
 
 The filename follows the fleet's `<model>_<task>_colab.ipynb` pattern; the notebook itself supports Kaggle only, because
 free Colab sessions do not have the host memory the 4-bit encoder load needs.

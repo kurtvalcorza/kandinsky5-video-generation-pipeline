@@ -5,7 +5,9 @@ DIMER pipeline for **Kandinsky 5.0 Video Lite**: text-to-video with
 image-to-video with `kandinskylab/Kandinsky-5.0-I2V-Lite-5s-Diffusers` (revision `8d965626ab76734922b00e359ca2d8faab2e0417`),
 on a single Kaggle T4.
 
-**Status: Candidate — no recorded execution.** See `STATUS.md` and `docs/release-verification.md`.
+[![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)](https://kaggle.com/kernels/welcome?src=https://github.com/kurtvalcorza/kandinsky5-video-generation-pipeline/blob/main/tutorials/kandinsky5_video_generation_colab.ipynb) In Kaggle, set **Accelerator → GPU T4** and **Internet → On** before *Run all*.
+
+**Status: Candidate — default Kaggle T4 run recorded at `ae58749`; BYOD journey not yet run.** See `STATUS.md` and `docs/release-verification.md`.
 
 ## What is here
 
