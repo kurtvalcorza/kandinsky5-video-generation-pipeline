@@ -97,5 +97,5 @@ def alignment_summary(own: Any, other: Any) -> dict[str, Any]:
         "margin": round(float(margin.mean()), 4),
         "frames_closer_to_own_prompt": round(float((margin > 0).mean()), 4),
         "frames_scored": int(own_arr.size),
-        "reading": "uncalibrated CLIP ViT-L/14 cosine similarity; a positive margin means the frames sit closer to their own prompt than to the other capability's prompt",
+        "reading": "uncalibrated tutorial evidence - CLIP ViT-L/14 cosine similarity against a swapped-prompt baseline; a positive margin means the frames sit closer to their own prompt than to the other capability's prompt",
     }

@@ -24,6 +24,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import importlib.util
+import inspect
 import json
 import re
 import subprocess
@@ -31,14 +32,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-GENERATOR_VERSION = "build_notebook.py/3.1-k5video"
+GENERATOR_VERSION = "build_notebook.py/3.3-k5video"
 NOTEBOOK_SPEC = "2.4"
 SOURCE_RECORD = "source.json"
 IDENTITY_NAMES = ("MODEL_ID", "MODEL_REVISION", "MODEL_LICENSE", "MODEL_KEY", "I2V_ID", "I2V_REVISION", "I2V_KEY")
 REQUIRED_KEYS = (
     "package", "repo_name", "stem", "notebook_name", "profile", "mode", "kind", "run_all", "byod", "title", "badges",
     "capability", "notice", "intro", "learning_objectives", "exclusions", "prerequisites", "carried", "stage_runner", "lock",
-    "managed_python", "uv", "runtime_gate", "runtime_modules", "setup", "cells", "closing", "guided",
+    "managed_python", "uv", "torch_index", "runtime_gate", "runtime_modules", "setup", "cells", "closing", "guided",
 )
 PROFILES = ("E2E", "ARTIFACT-INFERENCE", "TASK-INFERENCE", "MULTI-CAPABILITY")
 MODES = ("REFERENCE", "GUIDED", "WORKSHOP")
@@ -73,6 +74,21 @@ def _pins(repo: Path) -> list[str]:
 def lock_packages(lock_text: str) -> dict[str, str]:
     """`{name: version}` of every requirement in a uv/pip-compile hash lock."""
     return {m.group(1).lower(): m.group(2) for m in re.finditer(r"^([A-Za-z0-9._-]+)==([^\s\\]+)", lock_text, re.M)}
+
+
+PHASE_A_PACKAGES = ("torch", "torchvision")
+
+
+def split_lock(lock_text: str, phase_a: tuple[str, ...] | list[str] = ("torch", "torchvision")) -> tuple[str, str]:
+    """Split a uv hash lock into (phase A, phase B) requirement texts; every entry keeps its hashes, each lands once."""
+    import re as _re
+
+    first, second = [], []
+    for block in _re.split(r"\n(?=[A-Za-z0-9])", lock_text):
+        match = _re.match(r"([A-Za-z0-9._-]+)==", block)
+        if match:
+            (first if match.group(1).lower() in phase_a else second).append(block.rstrip("\n"))
+    return "\n".join(first) + "\n", "\n".join(second) + "\n"
 
 
 def check_lock(pins: list[str], lock_text: str) -> None:
@@ -199,6 +215,11 @@ SESSION_START = time.perf_counter()
 RUNTIME_NOTE = 'This notebook is supported on a Kaggle notebook with a T4 GPU (Settings > Accelerator > GPU T4 x2, Internet on). See Prerequisites and Troubleshooting.'
 if platform.system() != 'Linux' or platform.machine() != 'x86_64':
     raise RuntimeError('Unsupported platform: the locked environment is built for Linux x86_64 (manylinux). ' + RUNTIME_NOTE)
+# Kaggle-only (owner decision): a Kaggle notebook sets KAGGLE_KERNEL_RUN_TYPE to 'Interactive' or 'Batch' and mounts /kaggle.
+# Both markers are required, so a large non-Kaggle session (for example Colab Pro High-RAM) cannot pass the resource gate untested.
+KAGGLE_MARKERS = {{'KAGGLE_KERNEL_RUN_TYPE': os.environ.get('KAGGLE_KERNEL_RUN_TYPE', ''), '/kaggle': Path('/kaggle').is_dir()}}
+if KAGGLE_MARKERS['KAGGLE_KERNEL_RUN_TYPE'] not in ('Interactive', 'Batch') or not KAGGLE_MARKERS['/kaggle']:
+    raise RuntimeError(f'This is not a Kaggle notebook session (markers found: {{KAGGLE_MARKERS}}). The notebook is tested and supported on Kaggle only; open it in Kaggle (File > Import Notebook), then Run all. ' + RUNTIME_NOTE)
 try:
     gpu = subprocess.run(['nvidia-smi', '--query-gpu=name,memory.total,compute_cap', '--format=csv,noheader,nounits'], capture_output=True, text=True)
 except FileNotFoundError as exc:
@@ -274,7 +295,19 @@ for name in ('HF_TOKEN', 'HUGGING_FACE_HUB_TOKEN', 'PYTHONPATH', 'PYTHONHOME'):
     ENV.pop(name, None)
 subprocess.run([str(UV), 'venv', '--managed-python', '--python', {python!r}, str(ENV_ROOT / 'venv')], env=ENV, check=True)
 PYTHON = ENV_ROOT / 'venv' / 'bin' / 'python'
-subprocess.run([str(UV), 'pip', 'install', '--python', str(PYTHON), '--require-hashes', '--only-binary', ':all:', '--index-url', 'https://pypi.org/simple', '-r', str(ROOT / {lock!r})], env=ENV, check=True)
+# Two-phase install from the one carried lock, each phase from exactly one index (no cross-index choice):
+# phase A takes torch and torchvision (+cu128 builds) from the PyTorch CUDA 12.8 index, phase B takes every other entry
+# from PyPI. Both phases use --no-deps --require-hashes, so nothing outside the lock is installed, and `uv pip check`
+# then confirms the combined environment is consistent. (A single mixed-index install pulled triton from the PyTorch
+# mirror, whose wheel differs from the PyPI wheel the lock hashes.)
+{split_source}
+
+PHASE_A, PHASE_B = split_lock((ROOT / {lock!r}).read_text(encoding='utf-8'), {phase_a!r})
+(ROOT / 'requirements-phase-a-pytorch.txt').write_text(PHASE_A, encoding='utf-8')
+(ROOT / 'requirements-phase-b-pypi.txt').write_text(PHASE_B, encoding='utf-8')
+for index_url, requirements in (({torch_index!r}, 'requirements-phase-a-pytorch.txt'), ('https://pypi.org/simple', 'requirements-phase-b-pypi.txt')):
+    subprocess.run([str(UV), 'pip', 'install', '--python', str(PYTHON), '--no-deps', '--require-hashes', '--only-binary', ':all:', '--index-url', index_url, '-r', str(ROOT / requirements)], env=ENV, check=True)
+subprocess.run([str(UV), 'pip', 'check', '--python', str(PYTHON)], env=ENV, check=True)
 probe = subprocess.run([str(PYTHON), '-c', {probe!r}], env=ENV, check=True, capture_output=True, text=True)
 RUNTIME = json.loads(probe.stdout.strip().splitlines()[-1])
 print({{'notebook_source': NOTEBOOK_SOURCE['revision'], **RUNTIME, 'locked_packages': {n_locked}, 'environment': str(ENV_ROOT / 'venv'), 'setup_seconds': round(time.perf_counter() - SESSION_START)}})
@@ -347,7 +380,8 @@ def _infrastructure_code(key: str, ctx: dict[str, Any], template: dict[str, Any]
         uv = template["uv"]
         return INSTALL_CELL.format(
             uv_url=uv["url"], uv_bytes=int(uv["bytes"]), uv_sha256=uv["sha256"], uv_version=uv["version"],
-            python=template["managed_python"], lock=template["lock"], probe=_probe(template["runtime_modules"]),
+            python=template["managed_python"], lock=template["lock"], torch_index=template["torch_index"],
+            split_source=inspect.getsource(split_lock).rstrip(), phase_a=list(PHASE_A_PACKAGES), probe=_probe(template["runtime_modules"]),
             n_locked=ctx["lock_packages"], runner=template["stage_runner"],
         )
     if key == "weights":
