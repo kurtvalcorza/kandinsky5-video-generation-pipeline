@@ -5,7 +5,7 @@ DIMER pipeline for **Kandinsky 5.0 Video Lite**: text-to-video with
 image-to-video with `kandinskylab/Kandinsky-5.0-I2V-Lite-5s-Diffusers` (revision `8d965626ab76734922b00e359ca2d8faab2e0417`),
 on a single Kaggle T4.
 
-[![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)](https://kaggle.com/kernels/welcome?src=https://github.com/kurtvalcorza/kandinsky5-video-generation-pipeline/blob/main/tutorials/kandinsky5_video_generation_colab.ipynb) In Kaggle, set **Accelerator → GPU T4** and **Internet → On** before *Run all*.
+[![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)](https://kaggle.com/kernels/welcome?src=https://github.com/kurtvalcorza/kandinsky5-video-generation-pipeline/blob/main/tutorials/kandinsky5_video_generation.ipynb) In Kaggle, set **Accelerator → GPU T4** and **Internet → On** before *Run all*.
 
 **Status: Candidate — default Kaggle T4 run recorded at `ae58749`; BYOD journey not yet run.** See `STATUS.md` and `docs/release-verification.md`.
 
@@ -13,7 +13,7 @@ on a single Kaggle T4.
 
 | Path | Purpose |
 |---|---|
-| `tutorials/kandinsky5_video_generation_colab.ipynb` | the `TUTORIAL` notebook (`MULTI-CAPABILITY`, `GUIDED`, NOTEBOOK_SPEC 2.4), generated — do not edit by hand |
+| `tutorials/kandinsky5_video_generation.ipynb` | the `TUTORIAL` notebook (`MULTI-CAPABILITY`, `GUIDED`, NOTEBOOK_SPEC 2.4), generated — do not edit by hand |
 | `tutorials/requirements-kaggle.lock.txt` | hash lock for the notebook's isolated environment (Python 3.12, manylinux x86_64) |
 | `src/kandinsky5_video_pipeline/` | pinned identities and the sample image (`pipeline.py`), input validation (`inputs.py`), decoded-frame checks (`checks.py`) |
 | `tools/tutorial_stages.py` | the stage runner the notebook carries and runs one stage per process |
