@@ -23,10 +23,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = "kandinsky5_video_pipeline"
 REPO_NAME = "kandinsky5-video-generation-pipeline"
-NOTEBOOK = ROOT / "tutorials" / "kandinsky5_video_generation_colab.ipynb"
+NOTEBOOK = ROOT / "tutorials" / "kandinsky5_video_generation.ipynb"
 NOTEBOOK_SPEC = "2.4"
 EXPECTED_METADATA = {"notebook_kind": "TUTORIAL", "notebook_profile": "MULTI-CAPABILITY", "notebook_mode": "GUIDED", "notebook_spec": NOTEBOOK_SPEC}
 TUTORIAL_FILENAME = re.compile(r"^[a-z0-9]+_[a-z0-9_]+_colab\.ipynb$")  # KND2: <model>_<task>_colab.ipynb
+# KND2 is a SHOULD. The owner renamed this one notebook on 2026-10-12 (2a0f639); KND2 deviation recorded in
+# STATUS.md. The exemption covers this exact filename only; every other TUTORIAL name is still checked.
+KND2_EXEMPT_FILENAMES = frozenset({"kandinsky5_video_generation.ipynb"})
 
 CANONICAL_NOTICE = (
     "> **⚠️ Notice.** For research, training and evaluation only. Not validated for production,\n"
@@ -167,7 +170,7 @@ def notebook_problems(path: Path) -> list[str]:
     meta = notebook["metadata"].get("dimer", {})
     if notebook.get("nbformat") != 4:
         problems.append("nbformat must be 4 (SRC1)")
-    if not TUTORIAL_FILENAME.match(path.name):
+    if path.name not in KND2_EXEMPT_FILENAMES and not TUTORIAL_FILENAME.match(path.name):
         problems.append(f"{path.name} does not follow the TUTORIAL filename pattern <model>_<task>_colab.ipynb (KND2)")
     for key, value in EXPECTED_METADATA.items():
         if meta.get(key) != value:

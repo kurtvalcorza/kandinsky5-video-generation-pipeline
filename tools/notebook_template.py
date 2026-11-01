@@ -12,7 +12,7 @@ sft checkpoint) and then image-to-video, sharing one 4-bit text encoder pass and
 # ruff: noqa: E501  -- markdown prose and code-cell text are kept on single lines for readable rendering
 
 REPO = "kandinsky5-video-generation-pipeline"
-NOTEBOOK = "kandinsky5_video_generation_colab.ipynb"
+NOTEBOOK = "kandinsky5_video_generation.ipynb"
 
 BADGES = [
     ("GitHub", "https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white", f"https://github.com/kurtvalcorza/{REPO}"),
