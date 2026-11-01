@@ -13,7 +13,7 @@ from conftest import ROOT, load_tool
 build = load_tool("build_notebook")
 validator = load_tool("validate_release_assets")
 lock_audit = load_tool("audit_lock_coverage")
-NOTEBOOK = ROOT / "tutorials" / "kandinsky5_video_generation_colab.ipynb"
+NOTEBOOK = ROOT / "tutorials" / "kandinsky5_video_generation.ipynb"
 LOCK = ROOT / "tutorials" / "requirements-kaggle.lock.txt"
 
 

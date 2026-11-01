@@ -6,6 +6,11 @@
 |---|---|---|---|---|
 | 2026-10-12 | blob `659a276f7c55fd79bc621ca001cda926581a18d8` / `ae58749337caeeb7e75f6254ba30a8589f61f16a` | Kaggle T4 clean container (kernel `kurtvalcorza/dimer-nb2-kandinsky5-video-generation` v2), Tesla T4 15,360 MiB, single GPU; kernel Python 3.13.15, isolated environment Python 3.12.12, `torch 2.11.0+cu128`, `diffusers 0.40.0`, `transformers 5.16.1`, `bitsandbytes 0.50.2`, 66 hash-locked packages installed in two single-index phases | Strict single-pass `nbclient` (`--strict-run-all`) on a fresh interpreter, notebook fetched at the commit and blob-verified, empty Hugging Face cache, no repository checkout; default path only | **PASSED** — see *Recorded executions* |
 
+**Current blob not yet run.** The 2026-10-12 run below executed blob `659a276f` under the old filename
+`kandinsky5_video_generation_colab.ipynb`. The notebook was renamed (`2a0f639`) and regenerated, so the current
+`tutorials/kandinsky5_video_generation.ipynb` differs from that blob; a Kaggle T4 re-run of the current blob is pending (see
+`STATUS.md`).
+
 ## Recorded executions
 
 | Date | Commit / blob | Wall time | Result and evidence |
