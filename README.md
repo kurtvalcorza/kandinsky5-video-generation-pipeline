@@ -33,7 +33,7 @@ or South Korea.
 
 ```bash
 uv venv .venv --python 3.12
-uv pip install --python .venv pytest==8.4.2 ruff==0.16.6 numpy==2.5.3 pillow==11.3.0
+uv pip install --python .venv pytest==8.4.2 ruff==0.16.6 numpy==2.5.3 pillow==13.0.0
 .venv/bin/ruff check src tests tools
 .venv/bin/python -m pytest
 .venv/bin/python tools/validate_release_assets.py
